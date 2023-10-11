@@ -9,19 +9,18 @@ public class FileManager {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             return reader.readLine();
         } catch (FileNotFoundException e) {
-            System.out.println("Invalid file path");
+            throw new RuntimeException("Invalid file path");
         } catch (IOException e) {
-            System.out.println("failed to read file");
+            throw new RuntimeException("Failed to read file");
         }
-        return "Failure(";
     }
 
-    public static void ShowInfo(String path) {
-        String content = readFile(path);
-        if (content == null) {
-            System.out.println("File is empty");
-        } else {
+    public static void showInfo(String path) {
+        try {
+            String content = readFile(path);
             System.out.println(content);
+        } catch (NullPointerException e) {
+            throw new RuntimeException("File is empty");
         }
     }
 }
