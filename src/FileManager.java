@@ -4,23 +4,24 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class FileManager {
-    private static String readFile(String path) {
+    private String readFile(String path) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             return reader.readLine();
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Invalid file path");
+        } catch (NullPointerException e) {
+            throw new RuntimeException("File path is null");
         } catch (IOException e) {
             throw new RuntimeException("Failed to read file");
         }
     }
 
-    public static void showInfo(String path) {
-        try {
-            String content = readFile(path);
-            System.out.println(content);
-        } catch (NullPointerException e) {
-            throw new RuntimeException("File is empty");
+    public void showInfo(String path) {
+        String fileMessage = readFile(path);
+        if (fileMessage == null || fileMessage.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
         }
+        System.out.println(fileMessage);
     }
 }
