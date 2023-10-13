@@ -1,12 +1,14 @@
-package Service;
+package service.impl;
 
-import ServiceImpl.ReadableFile;
+import service.Reader;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class FileReader implements ReadableFile {
+public class FileReader implements Reader {
+
+    public String path;
 
     @Override
     public String readFile(String path) {
@@ -20,6 +22,10 @@ public class FileReader implements ReadableFile {
         } catch (IOException e) {
             throw new RuntimeException("Failed to read file");
         }
+    }
+
+    public FileReader(String path) {
+        this.path = path;
     }
 }
 

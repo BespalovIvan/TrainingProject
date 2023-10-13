@@ -1,8 +1,13 @@
-import Service.FilePrinter;
+import service.Printer;
+import service.Reader;
+import service.impl.FileReader;
+import service.impl.MessagePrinter;
 
 public class Main {
-    public static void main(String[] args)  {
-        FilePrinter printer = new FilePrinter();
-        printer.printMessage("C:\\Test\\Hello.txt");
+    public static void main(String[] args) {
+        Reader fileReader = new FileReader("C:\\Test\\Hello.txt");
+        Printer messagePrinter = new MessagePrinter(fileReader);
+        messagePrinter.print();
+
     }
 }
