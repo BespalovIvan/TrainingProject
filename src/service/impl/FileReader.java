@@ -24,6 +24,10 @@ public class FileReader implements Reader {
         }
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public FileReader(String path) {
         this.path = path;
     }
