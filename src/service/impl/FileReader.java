@@ -6,14 +6,19 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
 public class FileReader implements Reader {
 
-    public String path;
+    private final String PATH;
+
+    public FileReader(String PATH) {
+        this.PATH = PATH;
+    }
 
     @Override
-    public String readFile(String path) {
+    public String readFile() {
         try {
-            BufferedReader reader = new BufferedReader(new java.io.FileReader(path));
+            BufferedReader reader = new BufferedReader(new java.io.FileReader(PATH));
             return reader.readLine();
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Invalid file path");
@@ -22,14 +27,6 @@ public class FileReader implements Reader {
         } catch (IOException e) {
             throw new RuntimeException("Failed to read file");
         }
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public FileReader(String path) {
-        this.path = path;
     }
 }
 
