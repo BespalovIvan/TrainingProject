@@ -9,16 +9,16 @@ import java.io.IOException;
 
 public class FileReader implements Reader {
 
-    private final String PATH;
+    private final String path;
 
-    public FileReader(String PATH) {
-        this.PATH = PATH;
+    public FileReader(String path) {
+        this.path = path;
     }
 
     @Override
-    public String readFile() {
+    public String read() {
         try {
-            BufferedReader reader = new BufferedReader(new java.io.FileReader(PATH));
+            BufferedReader reader = new BufferedReader(new java.io.FileReader(path));
             return reader.readLine();
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Invalid file path");

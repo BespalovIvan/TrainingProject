@@ -4,14 +4,14 @@ import service.Printer;
 import service.Reader;
 
 public class MessagePrinter implements Printer {
-    Reader reader;
+    private final Reader reader;
 
     public MessagePrinter(Reader reader) {
         this.reader = reader;
     }
 
     public void print() {
-        String fileMessage = reader.readFile();
+        String fileMessage = reader.read();
         if (fileMessage == null || fileMessage.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
