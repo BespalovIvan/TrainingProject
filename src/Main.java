@@ -1,12 +1,12 @@
 import service.Printer;
 import service.Reader;
-import service.impl.FileReader;
-import service.impl.MessagePrinter;
+import service.impl.JsonPrinter;
+import service.impl.JsonReader;
 
 public class Main {
     public static void main(String[] args) {
-        Reader fileReader = new FileReader("C:\\Test\\Hello.txt");
-        Printer messagePrinter = new MessagePrinter(fileReader);
-        messagePrinter.print();
+        Reader jsonReader = new JsonReader("C:\\Test\\JSONTest.json");
+        Printer jsonPrinter = new JsonPrinter(jsonReader);
+        jsonPrinter.print();
     }
 }
