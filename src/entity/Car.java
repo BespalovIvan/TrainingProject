@@ -1,10 +1,10 @@
 package entity;
 
 public class Car {
-    String name;
-    String model;
-    Double price;
-    boolean isNew;
+    private final String name;
+    private final String model;
+    private final Double price;
+    private final boolean isNew;
 
     public Car(String name, String model, Double price, boolean isNew) {
         this.name = name;
@@ -15,7 +15,7 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "Car {" +
                 "name='" + name + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +

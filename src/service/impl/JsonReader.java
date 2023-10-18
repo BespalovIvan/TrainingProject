@@ -25,13 +25,14 @@ public class JsonReader implements Reader {
             JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(path));
             return jo.toString();
         } catch (ParseException e) {
-            throw new RuntimeException("failed to parse file");
+            throw new RuntimeException("incorrect structure JSON");
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("file not found");
-        } catch (IOException e) {
+            throw new RuntimeException("Invalid file path");
+        }catch (NullPointerException e){
+            throw new RuntimeException("File path is null");
+        }
+        catch (IOException e) {
             throw new RuntimeException("failed to read file");
         }
     }
-
-
 }
