@@ -1,12 +1,13 @@
+import entity.Car;
 import service.Printer;
 import service.Reader;
-import service.impl.JsonCarPrinter;
-import service.impl.JsonReader;
+import service.impl.CarPrinter;
+import service.impl.CarReader;
 
 public class Main {
     public static void main(String[] args) {
-        Reader jsonReader = new JsonReader("C:\\Test\\JSONTest.json");
-        Printer jsonPrinter = new JsonCarPrinter(jsonReader);
-        jsonPrinter.print();
+        Reader<Car> carReader = new CarReader("C:\\Test\\JSONTest.json");
+        Printer carPrinter = new CarPrinter(carReader);
+        carPrinter.print();
     }
 }

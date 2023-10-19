@@ -1,5 +1,7 @@
 package service;
 
-public interface Reader {
-     String read();
+public interface Reader<T> {
+
+     T read();
+     
 }

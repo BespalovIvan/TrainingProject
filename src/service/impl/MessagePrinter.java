@@ -4,9 +4,9 @@ import service.Printer;
 import service.Reader;
 
 public class MessagePrinter implements Printer {
-    private final Reader reader;
+    private final Reader<String> reader;
 
-    public MessagePrinter(Reader reader) {
+    public MessagePrinter(Reader<String>reader) {
         this.reader = reader;
     }
 

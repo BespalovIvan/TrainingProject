@@ -7,11 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-public class FileReader implements Reader {
+public class MessageReader implements Reader<String> {
 
     private final String path;
 
-    public FileReader(String path) {
+    public MessageReader(String path) {
         this.path = path;
     }
 
