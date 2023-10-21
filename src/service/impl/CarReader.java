@@ -16,19 +16,19 @@ public class CarReader implements Reader <Car> {
     private final String path;
 
     public CarReader(String path) {
-
+        if (path == null){
+            throw new RuntimeException ("File path is null");
+        }
+        if(path.isEmpty()){
+            throw new RuntimeException("Path is empty");
+        }
         this.path = path;
     }
 
     @Override
     public Car read() {
-        if (path == null){
-            throw new RuntimeException ("file path is null");
-        }
         try {
-            JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(path));
-            return new Car((String) jo.get("name"), (String) jo.get("model"), (Double) jo.get("price"),
-                    (boolean) jo.get("isNew"));
+           return initialize((JSONObject) new JSONParser().parse(new FileReader(path)));
         }catch (ParseException e) {
             throw new RuntimeException("Incorrect structure JSON");
         }catch (FileNotFoundException e) {
@@ -40,5 +40,10 @@ public class CarReader implements Reader <Car> {
         }catch (IOException e) {
             throw new RuntimeException("Failed to read file");
         }
+    }
+
+    private Car initialize(JSONObject jo){
+        return new Car((String) jo.get("name"), (String) jo.get("model"), (Double) jo.get("price"),
+                (boolean) jo.get("isNew"));
     }
 }
