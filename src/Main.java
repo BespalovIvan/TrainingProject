@@ -6,7 +6,7 @@ import service.impl.CarReader;
 
 public class Main {
     public static void main(String[] args) {
-        Reader<Car> carReader = new CarReader("C:\\Test\\JSONTest.json");
+        Reader<Car> carReader = new CarReader(args[0]);
         Printer carPrinter = new CarPrinter(carReader);
         carPrinter.print();
     }
