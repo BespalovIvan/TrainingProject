@@ -16,11 +16,8 @@ public class CarReader implements Reader <Car> {
     private final String path;
 
     public CarReader(String path) {
-        if (path == null){
-            throw new RuntimeException ("File path is null");
-        }
-        if(path.isEmpty()){
-            throw new RuntimeException("Path is empty");
+        if (path == null|| path.trim().isEmpty()){
+            throw new RuntimeException ("The path to the file is incorrect. Meaning " + path);
         }
         this.path = path;
     }
@@ -28,7 +25,7 @@ public class CarReader implements Reader <Car> {
     @Override
     public Car read() {
         try {
-           return initialize((JSONObject) new JSONParser().parse(new FileReader(path)));
+           return createCar((JSONObject) new JSONParser().parse(new FileReader(path)));
         }catch (ParseException e) {
             throw new RuntimeException("Incorrect structure JSON");
         }catch (FileNotFoundException e) {
@@ -42,8 +39,12 @@ public class CarReader implements Reader <Car> {
         }
     }
 
-    private Car initialize(JSONObject jo){
-        return new Car((String) jo.get("name"), (String) jo.get("model"), (Double) jo.get("price"),
-                (boolean) jo.get("isNew"));
+    private Car createCar(JSONObject jo){
+        return new Car(
+                (String) jo.get("name"),
+                (String) jo.get("model"),
+                (Double) jo.get("price"),
+                (boolean) jo.get("isNew")
+        );
     }
 }
