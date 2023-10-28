@@ -4,6 +4,8 @@ import entity.Car;
 import service.Printer;
 import service.Reader;
 
+import java.util.Objects;
+
 public class CarPrinter implements Printer {
 
     private final Reader<Car> reader;
@@ -15,9 +17,7 @@ public class CarPrinter implements Printer {
     @Override
     public void print() {
             Car car = reader.read();
-            if(car == null) {
-                throw new IllegalArgumentException("File is empty");
-            }
+        Objects.requireNonNull(car,"car cannot be null");
             System.out.println(car);
     }
 }
