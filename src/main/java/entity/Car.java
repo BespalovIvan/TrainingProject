@@ -8,12 +8,15 @@ public class Car {
     private final Double price;
     private final boolean isNew;
 
+
+
     public Car(String name, String model, Double price, boolean isNew) {
         this.name = name;
         this.model = model;
         this.price = price;
         this.isNew = isNew;
     }
+
 
     @Override
     public boolean equals(Object o) {
