@@ -1,8 +1,0 @@
-Main.class
-service\impl\CarPrinter.class
-service\impl\CarReader.class
-main\java\service\Printer.class
-entity\Car.class
-main\java\service\impl\MessagePrinter.class
-main\java\service\Reader.class
-main\java\service\impl\MessageReader.class
