@@ -8,6 +8,8 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.assertEquals;
 
 public class CarReaderTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testRead() {
@@ -17,8 +19,6 @@ public class CarReaderTest {
         assertEquals(carExpected,carActual);
     }
 
-    @Rule
-    public ExpectedException thrown= ExpectedException.none();
     @Test()
     public void testParseException(){
         CarReader carReader = new CarReader("C:\\Test\\JSONTest.json");

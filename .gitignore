@@ -29,3 +29,5 @@ bin/
 .DS_Store
 /.idea
 /TrainingProject.iml
+/dependency-reduced-pom.xml
+/.target
