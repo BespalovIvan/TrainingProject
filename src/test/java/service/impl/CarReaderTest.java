@@ -1,6 +1,7 @@
 package service.impl;
 
 import entity.Car;
+import exceptions.ReaderException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -22,12 +23,14 @@ public class CarReaderTest {
     @Test()
     public void testParseException(){
         CarReader carReader = new CarReader("C:\\Test\\JSONTest.json");
+        thrown.expect(ReaderException.class);
         thrown.expectMessage("Incorrect structure JSON");
         carReader.read();
     }
     @Test
     public void testFileNotFoundException(){
         CarReader carReader = new CarReader(":\\Test\\JSONTest.json");
+        thrown.expect(ReaderException.class);
         thrown.expectMessage("Invalid file path");
         carReader.read();
     }
@@ -35,12 +38,14 @@ public class CarReaderTest {
     @Test
     public void testNullPointerException(){
         CarReader carReader = new CarReader("C:\\Test\\JSONTest.json");
+        thrown.expect(ReaderException.class);
         thrown.expectMessage("Not enough arguments");
         carReader.read();
     }
 
     @Test
     public void testPathToFileEx(){
+        thrown.expect(ReaderException.class);
         thrown.expectMessage("The path to the file is incorrect. Meaning ");
         CarReader carReader = new CarReader("");
         carReader.read();
@@ -48,6 +53,7 @@ public class CarReaderTest {
     @Test
     public void testClassCastException(){
         CarReader carReader = new CarReader("C:\\Test\\JSONTest.json");
+        thrown.expect(ReaderException.class);
         thrown.expectMessage("Incorrect parameter type");
         carReader.read();
     }

@@ -1,6 +1,7 @@
 package service.impl;
 
 import entity.Car;
+import exceptions.ReaderException;
 import service.Reader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,7 +18,7 @@ public class CarReader implements Reader <Car> {
 
     public CarReader(String path) {
         if (path == null|| path.trim().isEmpty()){
-            throw new RuntimeException ("The path to the file is incorrect. Meaning " + path);
+            throw new ReaderException ("The path to the file is incorrect. Meaning " + path);
         }
         this.path = path;
     }
@@ -27,15 +28,15 @@ public class CarReader implements Reader <Car> {
         try {
            return createCar((JSONObject) new JSONParser().parse(new FileReader(path)));
         }catch (ParseException e) {
-            throw new RuntimeException("Incorrect structure JSON");
+            throw new ReaderException("Incorrect structure JSON");
         }catch (FileNotFoundException e) {
-            throw new RuntimeException("Invalid file path");
+            throw new ReaderException("Invalid file path");
         }catch (NullPointerException e){
-            throw new RuntimeException("Not enough arguments");
+            throw new ReaderException("Not enough arguments");
         }catch (ClassCastException e){
-            throw new RuntimeException("Incorrect parameter type");
+            throw new ReaderException("Incorrect parameter type");
         }catch (IOException e) {
-            throw new RuntimeException("Failed to read file");
+            throw new ReaderException("Failed to read file");
         }
     }
 
