@@ -17,7 +17,7 @@ public class CarPrinter implements Printer {
     @Override
     public void print() {
             Car car = reader.read();
-        Objects.requireNonNull(car,"car cannot be null");
+            Objects.requireNonNull(car,"car cannot be null");
             System.out.println(car);
     }
 }
