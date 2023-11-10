@@ -16,7 +16,7 @@ public class UserReader implements Reader<List<User>> {
     @Override
     public List<User> read() {
         JDBCConnect jdbcConnect = new JDBCConnect();
-        Connection conn =  jdbcConnect.getPostgresConnection();
+        Connection conn =  jdbcConnect.getPostgresConnection("C:\\Test\\JSONTest.json");
         try {
             Statement statement = conn.createStatement();
             return createUser(statement.executeQuery("SELECT * FROM users"));
