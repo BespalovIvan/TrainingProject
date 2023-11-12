@@ -1,26 +1,25 @@
 package config;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class JDBCConnect {
-    public Connection getPostgresConnection(String path){
+    private final Properties properties;
+
+    public JDBCConnect(Properties properties) {
+        this.properties = properties;
+    }
+
+    public Connection createConnection() {
+        Map<String,String> dataForConnect = properties.getProperties();
         try {
-            JSONObject ob = (JSONObject) new JSONParser().parse(new FileReader(path));
-            return DriverManager.getConnection((String) ob.get("url"),
-                    (String) ob.get("login"),
-                    (String) ob.get("password"));
+            return DriverManager.getConnection(dataForConnect.get("url"),
+                    dataForConnect.get("login"),
+                    dataForConnect.get("password"));
         } catch (SQLException e) {
-            throw new RuntimeException("failed to create connection");
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed create connection");
         }
     }
 }

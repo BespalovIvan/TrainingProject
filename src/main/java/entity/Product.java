@@ -3,9 +3,9 @@ package entity;
 public class Product {
     Integer id;
     String name;
-    Integer price;
+    Double price;
 
-    public Product(Integer id, String name, Integer price) {
+    public Product(Integer id, String name, Double price) {
         this.id = id;
         this.name = name;
         this.price = price;

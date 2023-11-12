@@ -1,19 +1,20 @@
 package entity;
 
+import java.util.Date;
+import java.util.List;
+
 public class Order {
     Integer id;
-    String orderStatus;
+    OrderStatus status;
+    User user;
+    List<Product> products;
+    Date dateOrder;
 
-    public Order(Integer id, String orderStatus) {
+    public Order(Integer id, OrderStatus status, User user, List<Product> products, Date dateOrder) {
         this.id = id;
-        this.orderStatus = orderStatus;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", orderStatus='" + orderStatus + '\'' +
-                '}';
+        this.status = status;
+        this.user = user;
+        this.products = products;
+        this.dateOrder = dateOrder;
     }
 }
