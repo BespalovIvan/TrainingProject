@@ -1,4 +1,4 @@
-package Repository;
+package Repository.impl;
 
 public class ProductRepo {
 }

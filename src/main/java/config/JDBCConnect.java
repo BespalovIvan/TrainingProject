@@ -14,8 +14,9 @@ public class JDBCConnect {
 
     public Connection createConnection() {
         Map<String,String> dataForConnect = properties.getProperties();
-        try {
-            return DriverManager.getConnection(dataForConnect.get("url"),
+        try{
+            return  DriverManager.getConnection(
+                    dataForConnect.get("url"),
                     dataForConnect.get("login"),
                     dataForConnect.get("password"));
         } catch (SQLException e) {
