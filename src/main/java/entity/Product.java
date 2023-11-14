@@ -1,9 +1,9 @@
 package entity;
 
 public class Product {
-    Integer id;
-    String name;
-    Double price;
+    private final Integer id;
+    private final String name;
+    private final Double price;
 
     public Product(Integer id, String name, Double price) {
         this.id = id;

@@ -1,10 +1,10 @@
 package entity;
 
 public class User {
-    Integer id;
-    String name;
-    String last_name;
-    String email;
+    private final Integer id;
+    private final String name;
+    private final String last_name;
+    private final String email;
 
     public User(Integer id, String name, String last_name, String email) {
         this.id = id;

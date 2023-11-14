@@ -1,4 +1,4 @@
-package Repository.impl;
+package repository.impl;
 
 public class OrderRepo {
 }
