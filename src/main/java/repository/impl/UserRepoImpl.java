@@ -98,5 +98,4 @@ public class UserRepoImpl implements UserRepo{
             throw new RuntimeException("invalid request");
         }
     }
-
 }
