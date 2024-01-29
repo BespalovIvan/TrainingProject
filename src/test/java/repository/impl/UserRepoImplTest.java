@@ -19,8 +19,6 @@ public class UserRepoImplTest {
         User user = new User(1,"IVAN","BESPALOV","bespalovivan@mail.ru");
         actual.add(user);
         Assert.assertEquals(expected,actual);
-
-
     }
 
     @Test

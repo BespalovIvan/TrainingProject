@@ -1,7 +1,7 @@
 package entity;
 
 public enum OrderStatus {
-    CREATE,
+    CREATED,
     PAID,
-    ISSUED
+    FINISHED
 }

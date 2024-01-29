@@ -1,25 +1,42 @@
 package entity;
 
+import java.util.Objects;
+
 public class User {
     private final Integer id;
-    private final String name;
-    private final String last_name;
+    private final String firstName;
+    private final String lastName;
     private final String email;
 
-    public User(Integer id, String name, String last_name, String email) {
+
+
+    public User(Integer id, String firstName, String lastName, String email) {
         this.id = id;
-        this.name = name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 
     @Override
     public String toString() {
-        return "User"+id+"{" +
+        return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", name='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email);
     }
 }
