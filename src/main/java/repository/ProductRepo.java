@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ProductRepo {
     List<Product> findAll();
-    Product findById(Integer id);
+    Product findById(Long id);
     void createProduct (String name, BigDecimal price);
-    void updateProduct(Integer id, String name, BigDecimal price);
-    void deleteProductById(Integer id);
+    void updateProduct(Long id, String name, BigDecimal price);
+    void deleteProductById(Long id);
 }

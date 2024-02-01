@@ -16,7 +16,7 @@ public class UserRepoImplTest {
         UserRepoImpl userRepo = new UserRepoImpl(new JDBCConnect(new Properties("C:\\Test\\JSONTest.json")));
         List<User> expected = userRepo.findAll();
         List<User> actual = new ArrayList<>();
-        User user = new User(1,"IVAN","BESPALOV","bespalovivan@mail.ru");
+        User user = new User(1L,"IVAN","bespalovivan@mail.ru");
         actual.add(user);
         Assert.assertEquals(expected,actual);
     }

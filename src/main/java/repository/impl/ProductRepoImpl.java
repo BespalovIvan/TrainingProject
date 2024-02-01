@@ -24,7 +24,7 @@ public class ProductRepoImpl implements ProductRepo {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM products");
             while (resultSet.next()){
-                products.add(new Product(resultSet.getInt(1),
+                products.add(new Product(resultSet.getLong(1),
                                       resultSet.getString(2),
                                       resultSet.getBigDecimal(3)));
             }
@@ -36,14 +36,14 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public Product findById(Integer id) {
+    public Product findById(Long id) {
         try(Connection connection = jdbcConnect.createConnection()){
             PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM goods WHERE id = ?");
-            preparedStatement.setInt(1,id);
+            preparedStatement.setLong(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                return new Product(resultSet.getInt(1)
+                return new Product(resultSet.getLong(1)
                                ,resultSet.getString(2)
                                ,resultSet.getBigDecimal(3));
             }
@@ -68,13 +68,13 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public void updateProduct(Integer id, String name, BigDecimal price) {
+    public void updateProduct(Long id, String name, BigDecimal price) {
         try(Connection connection = jdbcConnect.createConnection()){
         PreparedStatement preparedStatement = connection
                 .prepareStatement("UPDATE goods SET name = ?, price = ? WHERE id = ?");
         preparedStatement.setString(1,name);
         preparedStatement.setBigDecimal(2,price);
-        preparedStatement.setInt(3,id);
+        preparedStatement.setLong(3,id);
         preparedStatement.executeUpdate();
         }
         catch (SQLException e){
@@ -84,11 +84,11 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public void deleteProductById(Integer id) {
+    public void deleteProductById(Long id) {
         try(Connection connection = jdbcConnect.createConnection()){
             PreparedStatement preparedStatement = connection
                     .prepareStatement("DELETE FROM goods WHERE id = ?");
-            preparedStatement.setInt(1,id);
+            preparedStatement.setLong(1,id);
             preparedStatement.executeUpdate();
         }
         catch (SQLException e){

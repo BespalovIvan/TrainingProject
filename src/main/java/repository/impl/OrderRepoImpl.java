@@ -2,7 +2,6 @@ package repository.impl;
 
 import config.JDBCConnect;
 import entity.Order;
-import entity.OrderStatus;
 import entity.Product;
 import entity.User;
 import repository.OrderRepo;
@@ -23,17 +22,31 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public List<Order> FindAll() {
+    public List<Order> findAll() {
         List<Order> orders = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(" SELECT o.id, s.name, u.first_name,u.last_name,p.name,create_ord " +
+            ResultSet resultSet = statement.executeQuery("SELECT o.id as order_id, o.user_id,u.name,u.email," +
+                    " o.datetime as date, op.product_id , op.product_quantity, p.name as product_name, p.price " +
                     "FROM orders as o " +
-                    "JOIN statuses s ON (o.status_id = s.id) " +
-                    "JOIN users as u ON (o.user_id = u.id) " +
-                    "JOIN products as p ON (o.product_id = p.id) ;");
+                    "JOIN order_products as op ON (o.id = op.order_id) " +
+                    "JOIN products as p ON (op.product_id = p.id) " +
+                    "JOIN users as u ON (o.user_id = u.id)");
 
-
+            while (resultSet.next()) {
+                List<Product> productList = new ArrayList<>();
+                long order_id = resultSet.getLong(1);
+                while (resultSet.next()) {
+                    if (order_id == resultSet.getLong(1)) {
+                        productList.add(new Product(resultSet.getLong(6),
+                                resultSet.getString(8), resultSet.getBigDecimal(9)));
+                        orders.add(new Order(resultSet.getLong(1), new User(resultSet.getLong(2)
+                                , resultSet.getString(3), resultSet.getString(4)), productList,
+                                resultSet.getDate(5)));
+                    }
+                    else break;
+                }
+            }
             return orders;
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
@@ -41,12 +54,12 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public Order findById(Integer id) {
+    public Order findById(Long id) {
         return null;
     }
 
     @Override
-    public void createOrder(OrderStatus status, User user, List<Product> products, LocalDateTime createOrder) {
+    public void createOrder(User user, List<Product> products, LocalDateTime createOrder) {
 
     }
 

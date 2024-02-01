@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UserRepo{
     List<User> findAll();
-    User findById(Integer id);
-    void createUser(String name,String lastName,String email);
-    void updateUserById(Integer id, String name, String lastName, String email);
-    void deleteUserById(Integer id);
+    User findById(Long id);
+    void createUser(String name,String email);
+    void updateUserById(Long id, String name,String email);
+    void deleteUserById(Long id);
 }
