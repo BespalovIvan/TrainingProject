@@ -34,19 +34,29 @@ public class OrderRepoImpl implements OrderRepo {
                     "JOIN users as u ON (o.user_id = u.id)");
 
             while (resultSet.next()) {
-                List<Product> productList = new ArrayList<>();
-                long order_id = resultSet.getLong(1);
-                while (resultSet.next()) {
-                    if (order_id == resultSet.getLong(1)) {
+                if (orders.isEmpty()) {
+                    List<Product> productList = new ArrayList<>();
+                    productList.add(new Product(resultSet.getLong(6),
+                            resultSet.getString(8), resultSet.getBigDecimal(9)));
+                    orders.add(new Order(resultSet.getLong(1), new User(resultSet.getLong(2)
+                            , resultSet.getString(3), resultSet.getString(4)), productList,
+                            resultSet.getTimestamp(5)));
+                } else {
+                    Order o = orders.get(orders.size() - 1);
+                    if (o.getId() != resultSet.getLong(1)) {
+                        List<Product> productList = new ArrayList<>();
                         productList.add(new Product(resultSet.getLong(6),
                                 resultSet.getString(8), resultSet.getBigDecimal(9)));
                         orders.add(new Order(resultSet.getLong(1), new User(resultSet.getLong(2)
                                 , resultSet.getString(3), resultSet.getString(4)), productList,
-                                resultSet.getDate(5)));
+                                resultSet.getTimestamp(5)));
+                    } else {
+                        o.getProducts().add(new Product(resultSet.getLong(6),
+                                resultSet.getString(8), resultSet.getBigDecimal(9)));
                     }
-                    else break;
                 }
             }
+
             return orders;
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");

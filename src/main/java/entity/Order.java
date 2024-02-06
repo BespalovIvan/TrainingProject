@@ -1,6 +1,5 @@
 package entity;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -22,10 +21,10 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "id=" + id +
-                ", user=" + user +
-                ", products=" + products +
-                ", createOrder=" + createOrder +
+                "id= " + id +
+                ", " + user +
+                ", Products : " + products +
+                ", createOrder = " + createOrder +
                 '}';
     }
 
@@ -40,5 +39,21 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(id, user, products, createOrder);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public Date getCreateOrder() {
+        return createOrder;
     }
 }
