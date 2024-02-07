@@ -84,11 +84,13 @@ public class OrderRepoImpl implements OrderRepo {
                     result.getProducts().add(new Product(resultSet.getLong(6),
                             resultSet.getString(8), resultSet.getBigDecimal(9)));
                 }
-
+            }
+            if(result == null){
+                throw new RuntimeException("User not found!");
             }
             return result;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("invalid request");
         }
     }
 
