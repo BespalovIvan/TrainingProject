@@ -10,6 +10,7 @@ import java.util.List;
 public interface OrderRepo {
      List<Order> findAll();
      Order findById(Long id);
+     List<Order> findByUserId(Long id);
      void createOrder(User user, List<Product> products, LocalDateTime createOrder);
      void deleteOrder(Integer id);
 }
