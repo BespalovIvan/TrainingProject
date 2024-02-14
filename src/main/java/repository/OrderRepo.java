@@ -1,16 +1,14 @@
 package repository;
 
 import entity.Order;
-import entity.Product;
-import entity.User;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.List;
 
 public interface OrderRepo {
      List<Order> findAll();
      Order findById(Long id);
      List<Order> findByUserId(Long id);
-     void createOrder(User user, List<Product> products, LocalDateTime createOrder);
+     void createOrder(Long userId, Date dateTime, Long productId, Integer countProducts);
      void deleteOrder(Integer id);
 }

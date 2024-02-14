@@ -7,7 +7,6 @@ import entity.User;
 import repository.OrderRepo;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,8 +141,26 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public void createOrder(User user, List<Product> products, LocalDateTime createOrder) {
-
+    public void createOrder(Long userId, Date dateTime, Long productId, Integer countProducts) {
+            Connection connection = jdbcConnect.createConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DO $$" +
+                    "DECLARE order_id bigint;" +
+                    "BEGIN " +
+                    "INSERT INTO orders (user_id,datetime) VALUES (?,?) RETURNING id " +
+                    "INTO order_id; " +
+                    "INSERT INTO order_products (order_id,product_id,product_quantity) " +
+                    "VALUES (order_id,?,?); COMMIT;" +
+                    "END$$ ");
+            preparedStatement.setLong(1,userId);
+            preparedStatement.setDate(2,dateTime);
+            preparedStatement.setLong(3,productId);
+            preparedStatement.setInt(4,countProducts);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
