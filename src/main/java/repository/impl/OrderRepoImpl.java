@@ -7,6 +7,7 @@ import entity.User;
 import repository.OrderRepo;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +61,7 @@ public class OrderRepoImpl implements OrderRepo {
 
     @Override
     public Order findById(Long id) {
-        try {
-            Connection connection = jdbcConnect.createConnection();
+        try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT o.id as order_id, " +
                     "o.user_id,u.name,u.email,o.datetime as date, op.product_id , op.product_quantity," +
                     " p.name as product_name, p.price " +
@@ -85,7 +85,7 @@ public class OrderRepoImpl implements OrderRepo {
                 }
             }
             if (result == null) {
-                throw new RuntimeException("User not found!");
+                return new Order(null,null,null,null);
             }
             return result;
         } catch (SQLException e) {
@@ -96,8 +96,7 @@ public class OrderRepoImpl implements OrderRepo {
     @Override
     public List<Order> findByUserId(Long id) {
         List<Order> orders = new ArrayList<>();
-        Connection connection = jdbcConnect.createConnection();
-        try {
+        try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT o.id as order_id, " +
                     "o.user_id,u.name,u.email, o.datetime as date, op.product_id , " +
                     "op.product_quantity, p.name as product_name, p.price " +
@@ -129,8 +128,9 @@ public class OrderRepoImpl implements OrderRepo {
                     }
                 }
             }
-            if(orders.isEmpty()){
-                throw new RuntimeException("User not found");
+            if (orders.isEmpty()) {
+                orders.add(new Order(null,null,null,null));
+                return orders;
             }
             return orders;
 
@@ -141,25 +141,20 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public void createOrder(Long userId, Date dateTime, Long productId, Integer countProducts) {
-            Connection connection = jdbcConnect.createConnection();
-        try {
+    public void createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts) {
+        try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "DO $$" +
-                    "DECLARE order_id bigint;" +
-                    "BEGIN " +
-                    "INSERT INTO orders (user_id,datetime) VALUES (?,?) RETURNING id " +
-                    "INTO order_id; " +
-                    "INSERT INTO order_products (order_id,product_id,product_quantity) " +
-                    "VALUES (order_id,?,?); COMMIT;" +
-                    "END$$ ");
-            preparedStatement.setLong(1,userId);
-            preparedStatement.setDate(2,dateTime);
-            preparedStatement.setLong(3,productId);
-            preparedStatement.setInt(4,countProducts);
+                        "WITH new_data AS ( INSERT INTO orders (user_id,datetime) " +
+                                "VALUES (?,?) RETURNING id) " +
+                                "INSERT INTO order_products (order_id,product_id,product_quantity) " +
+                                "VALUES ((SELECT id FROM new_data),?,?);");
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(dateTime));
+            preparedStatement.setLong(3, productId);
+            preparedStatement.setInt(4, countProducts);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("invalid request");
         }
     }
 
