@@ -10,6 +10,6 @@ public interface OrderRepo {
      List<Order> findAll();
      Order findById(Long id);
      List<Order> findByUserId(Long id);
-     void createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts);
+     Long createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts);
      void deleteOrder(Integer id);
 }

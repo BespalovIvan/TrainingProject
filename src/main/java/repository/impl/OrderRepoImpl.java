@@ -85,7 +85,7 @@ public class OrderRepoImpl implements OrderRepo {
                 }
             }
             if (result == null) {
-                return new Order(null,null,null,null);
+                return new Order(null, null, null, null);
             }
             return result;
         } catch (SQLException e) {
@@ -129,7 +129,7 @@ public class OrderRepoImpl implements OrderRepo {
                 }
             }
             if (orders.isEmpty()) {
-                orders.add(new Order(null,null,null,null));
+                orders.add(new Order(null, null, null, null));
                 return orders;
             }
             return orders;
@@ -141,21 +141,49 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public void createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts) {
+    public Long createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts) {
         try (Connection connection = jdbcConnect.createConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                        "WITH new_data AS ( INSERT INTO orders (user_id,datetime) " +
-                                "VALUES (?,?) RETURNING id) " +
-                                "INSERT INTO order_products (order_id,product_id,product_quantity) " +
-                                "VALUES ((SELECT id FROM new_data),?,?);");
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(dateTime));
-            preparedStatement.setLong(3, productId);
-            preparedStatement.setInt(4, countProducts);
-            preparedStatement.executeUpdate();
+            connection.setAutoCommit(false);
+            Long orderId = createOrder(userId, dateTime, connection);
+            createOrderProduct(productId, countProducts, connection, orderId);
+            connection.commit();
+            System.out.println(orderId);
+            return orderId;
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }
+    }
+
+    private static void createOrderProduct(Long productId, Integer countProducts, Connection connection, Long order_id)  {
+       try{PreparedStatement insertToOrderProducts = connection.prepareStatement("INSERT INTO order_products " +
+               "(order_id,product_id,product_quantity)" +
+               "VALUES (?,?,?);");
+           insertToOrderProducts.setLong(1, order_id);
+           insertToOrderProducts.setLong(2, productId);
+           insertToOrderProducts.setInt(3, countProducts);
+           insertToOrderProducts.executeUpdate();}
+       catch (SQLException e){
+           throw new RuntimeException("invalid request");
+       }
+    }
+
+
+    private static Long createOrder(Long userId, LocalDateTime dateTime, Connection connection) {
+       try{
+           PreparedStatement insertToOrders = connection.prepareStatement(
+               "INSERT INTO orders (user_id,datetime)" +
+                       "VALUES (?,?)", new String[]{"id"});
+           insertToOrders.setLong(1, userId);
+           insertToOrders.setTimestamp(2, Timestamp.valueOf(dateTime));
+           insertToOrders.executeUpdate();
+           ResultSet gk = insertToOrders.getGeneratedKeys();
+           if (gk.next()) {
+               return gk.getLong("id");
+           }}
+       catch (SQLException e) {
+           throw new RuntimeException("invalid request");
+       }
+        throw new RuntimeException("Failed to create order");
     }
 
     @Override
