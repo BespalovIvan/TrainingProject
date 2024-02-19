@@ -1,4 +1,4 @@
-package entity;
+package com.example.trainingProject.entity;
 
 import java.math.BigDecimal;
 import java.util.Objects;

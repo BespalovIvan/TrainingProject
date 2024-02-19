@@ -1,4 +1,4 @@
-package entity;
+package com.example.trainingProject.entity;
 
 import java.util.Objects;
 
@@ -13,6 +13,18 @@ public class User {
         this.id = id;
         this.firstName = firstName;
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override

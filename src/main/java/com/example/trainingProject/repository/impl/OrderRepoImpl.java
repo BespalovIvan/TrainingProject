@@ -1,10 +1,10 @@
-package repository.impl;
+package com.example.trainingProject.repository.impl;
 
-import config.JDBCConnect;
-import entity.Order;
-import entity.Product;
-import entity.User;
-import repository.OrderRepo;
+import com.example.trainingProject.config.JDBCConnect;
+import com.example.trainingProject.entity.Order;
+import com.example.trainingProject.entity.Product;
+import com.example.trainingProject.entity.User;
+import com.example.trainingProject.repository.OrderRepo;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -19,17 +19,18 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<Order> findBetween(Long with, Long by) {
         List<Order> orders = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT o.id as order_id, o.user_id,u.name,u.email," +
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT o.id as order_id, o.user_id,u.name,u.email," +
                     " o.datetime as date, op.product_id , op.product_quantity, p.name as product_name, p.price " +
                     "FROM orders as o " +
                     "JOIN order_products as op ON (o.id = op.order_id) " +
                     "JOIN products as p ON (op.product_id = p.id) " +
-                    "JOIN users as u ON (o.user_id = u.id)");
-
+                    "JOIN users as u ON (o.user_id = u.id) WHERE order_id BETWEEN ? AND ?");
+            preparedStatement.setLong(1,with);
+            preparedStatement.setLong(2,by);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 if (orders.isEmpty()) {
                     List<Product> productList = new ArrayList<>();
@@ -84,9 +85,6 @@ public class OrderRepoImpl implements OrderRepo {
                             resultSet.getString(8), resultSet.getBigDecimal(9)));
                 }
             }
-            if (result == null) {
-                return new Order(null, null, null, null);
-            }
             return result;
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
@@ -128,16 +126,11 @@ public class OrderRepoImpl implements OrderRepo {
                     }
                 }
             }
-            if (orders.isEmpty()) {
-                orders.add(new Order(null, null, null, null));
-                return orders;
-            }
             return orders;
 
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }
-
     }
 
     @Override
@@ -154,35 +147,36 @@ public class OrderRepoImpl implements OrderRepo {
         }
     }
 
-    private static void createOrderProduct(Long productId, Integer countProducts, Connection connection, Long order_id)  {
-       try{PreparedStatement insertToOrderProducts = connection.prepareStatement("INSERT INTO order_products " +
-               "(order_id,product_id,product_quantity)" +
-               "VALUES (?,?,?);");
-           insertToOrderProducts.setLong(1, order_id);
-           insertToOrderProducts.setLong(2, productId);
-           insertToOrderProducts.setInt(3, countProducts);
-           insertToOrderProducts.executeUpdate();}
-       catch (SQLException e){
-           throw new RuntimeException("invalid request");
-       }
+    private static void createOrderProduct(Long productId, Integer countProducts, Connection connection, Long order_id) {
+        try {
+            PreparedStatement insertToOrderProducts = connection.prepareStatement("INSERT INTO order_products " +
+                    "(order_id,product_id,product_quantity)" +
+                    "VALUES (?,?,?);");
+            insertToOrderProducts.setLong(1, order_id);
+            insertToOrderProducts.setLong(2, productId);
+            insertToOrderProducts.setInt(3, countProducts);
+            insertToOrderProducts.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("invalid request");
+        }
     }
 
 
     private static Long createOrder(Long userId, LocalDateTime dateTime, Connection connection) {
-       try{
-           PreparedStatement insertToOrders = connection.prepareStatement(
-               "INSERT INTO orders (user_id,datetime)" +
-                       "VALUES (?,?)", new String[]{"id"});
-           insertToOrders.setLong(1, userId);
-           insertToOrders.setTimestamp(2, Timestamp.valueOf(dateTime));
-           insertToOrders.executeUpdate();
-           ResultSet gk = insertToOrders.getGeneratedKeys();
-           if (gk.next()) {
-               return gk.getLong("id");
-           }}
-       catch (SQLException e) {
-           throw new RuntimeException("invalid request");
-       }
+        try {
+            PreparedStatement insertToOrders = connection.prepareStatement(
+                    "INSERT INTO orders (user_id,datetime)" +
+                            "VALUES (?,?)", new String[]{"id"});
+            insertToOrders.setLong(1, userId);
+            insertToOrders.setTimestamp(2, Timestamp.valueOf(dateTime));
+            insertToOrders.executeUpdate();
+            ResultSet gk = insertToOrders.getGeneratedKeys();
+            if (gk.next()) {
+                return gk.getLong("id");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("invalid request");
+        }
         throw new RuntimeException("Failed to create order");
     }
 

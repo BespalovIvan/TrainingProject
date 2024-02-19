@@ -1,4 +1,4 @@
-package entity;
+package com.example.trainingProject.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
