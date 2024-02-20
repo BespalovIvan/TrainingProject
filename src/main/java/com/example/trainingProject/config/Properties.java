@@ -4,6 +4,7 @@ import com.example.trainingProject.exceptions.ReaderException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
@@ -13,14 +14,13 @@ import java.util.Map;
 
 @Component
 public class Properties {
-    private String path;
+    private final String path;
 
+    @Autowired
     public Properties(String path) {
         this.path = path;
     }
 
-    public Properties() {
-    }
 
     public Map<String, String> getProperties() {
         try {

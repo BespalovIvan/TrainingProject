@@ -1,5 +1,6 @@
 package com.example.trainingProject.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -11,9 +12,11 @@ import java.util.Map;
 public class JDBCConnect {
     private final Properties properties;
 
+    @Autowired
     public JDBCConnect(Properties properties) {
         this.properties = properties;
     }
+
 
     public Connection createConnection() {
         Map<String,String> dataForConnect = properties.getProperties();

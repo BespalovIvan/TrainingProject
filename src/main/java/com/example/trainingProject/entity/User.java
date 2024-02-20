@@ -2,6 +2,7 @@ package com.example.trainingProject.entity;
 
 import java.util.Objects;
 
+
 public class User {
     private final Long id;
     private final String firstName;

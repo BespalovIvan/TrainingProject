@@ -16,7 +16,7 @@ public class UserRepoImpl implements UserRepo {
 
 
     private final JDBCConnect jdbcConnect;
-
+    @Autowired
     public UserRepoImpl(JDBCConnect jdbcConnect) {
         this.jdbcConnect = jdbcConnect;
     }
