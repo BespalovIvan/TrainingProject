@@ -23,9 +23,16 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String findUsers (@RequestParam("with") Long with, @RequestParam("by") Long by, Model model){
-        List<User> userList = userService.findBetween(with,by);
-        model.addAttribute("users",userList);
+    public String findUsers(@RequestParam("with") Long with, @RequestParam("by") Long by, Model model) {
+        List<User> userList = userService.findBetween(with, by);
+        model.addAttribute("users", userList);
         return "user-list";
+    }
+
+    @GetMapping("/user")
+    public String findById(@RequestParam("id") Long id, Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "user";
     }
 }

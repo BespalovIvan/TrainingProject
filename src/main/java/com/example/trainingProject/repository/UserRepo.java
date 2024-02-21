@@ -1,11 +1,12 @@
 package com.example.trainingProject.repository;
 
 import com.example.trainingProject.entity.User;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepo{
+public interface UserRepo  {
     List<User> findBetween(Long with, Long by);
     Optional<User> findById(Long id);
     Long createUser(String name,String email);

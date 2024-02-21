@@ -1,19 +1,30 @@
 package com.example.trainingProject.entity;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
-
+@Entity
+@Table(name = "users")
 public class User {
-    private final Long id;
-    private final String firstName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private  Long id;
 
-    private final String email;
+    @Column(name = "name")
+    private  String firstName;
+
+    @Column(name = "email")
+    private  String email;
 
 
     public User(Long id, String firstName, String email) {
         this.id = id;
         this.firstName = firstName;
         this.email = email;
+    }
+
+    public User() {
     }
 
     public Long getId() {

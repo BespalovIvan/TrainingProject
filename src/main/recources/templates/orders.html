@@ -7,17 +7,19 @@
           href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
 </head>
 <body>
-<h1>User list</h1>
+<h1>Orders</h1>
 <table>
     <tr>
         <th>ID</th>
-        <th>NAME</th>
-        <th>EMAIL</th>
+        <th>User</th>
+        <th>Products</th>
+        <th>Date</th>
     </tr>
-    <tr th:each="user:${users}">
-        <td th:text="${user.id}">Id</td>
-        <td th:text="${user.firstName}">Name</td>
-        <td th:text="${user.email}">Email</td>
+    <tr th:each="order:${orders}">
+        <td th:text="${order.id}">Id</td>
+        <td th:text="${order.user}">Name</td>
+        <td th:text="${order.products}">Name</td>
+        <td th:text="${order.createOrder}">Date</td>
     </tr>
 </table>
 </body>

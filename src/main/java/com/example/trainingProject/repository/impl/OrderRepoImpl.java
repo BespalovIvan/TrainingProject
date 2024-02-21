@@ -5,12 +5,14 @@ import com.example.trainingProject.entity.Order;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.OrderRepo;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class OrderRepoImpl implements OrderRepo {
     private final JDBCConnect jdbcConnect;
 

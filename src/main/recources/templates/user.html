@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Users</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+    <meta charset="UTF-8">
+    <title>User</title>
 </head>
 <body>
-<h1>User list</h1>
+<h1>User</h1>
 <table>
     <tr>
         <th>ID</th>
         <th>NAME</th>
         <th>EMAIL</th>
     </tr>
-    <tr th:each="user:${users}">
         <td th:text="${user.id}">Id</td>
         <td th:text="${user.firstName}">Name</td>
         <td th:text="${user.email}">Email</td>

@@ -1,30 +1,30 @@
 package com.example.trainingProject.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
+
 
 @Component
 public class JDBCConnect {
-    private final Properties properties;
 
-    @Autowired
-    public JDBCConnect(Properties properties) {
-        this.properties = properties;
-    }
+    @Value("${spring.datasource.url}")
+    String url;
+    @Value("${spring.datasource.username}")
+    String login;
+    @Value("${spring.datasource.password}")
+    String password;
 
 
+    @Bean
     public Connection createConnection() {
-        Map<String,String> dataForConnect = properties.getProperties();
-        try{
-            return  DriverManager.getConnection(
-                    dataForConnect.get("url"),
-                    dataForConnect.get("login"),
-                    dataForConnect.get("password"));
+
+        try {
+            return DriverManager.getConnection(url, login, password);
         } catch (SQLException e) {
             throw new RuntimeException("Failed create connection");
         }
