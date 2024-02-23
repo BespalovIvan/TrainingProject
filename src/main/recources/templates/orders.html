@@ -9,18 +9,25 @@
 <body>
 <h1>Orders</h1>
 <table>
+    <thead>
     <tr>
         <th>ID</th>
         <th>User</th>
         <th>Products</th>
         <th>Date</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="order:${orders}">
         <td th:text="${order.id}">Id</td>
         <td th:text="${order.user}">Name</td>
         <td th:text="${order.products}">Name</td>
         <td th:text="${order.createOrder}">Date</td>
+        <td><a th:href="@{order-update/{id}(id=${order.id})}">Edit</a></td>
+        <td><a th:href="@{order-delete/{id}(id=${order.id})}">Delete</a></td>
     </tr>
+    </tbody>
 </table>
+<p><a href="/order-create">Create order</a></p>
 </body>
 </html>

@@ -7,18 +7,25 @@
           href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
 </head>
 <body>
-<h1>User list</h1>
+<h2>Users</h2>
 <table>
+    <thead>
     <tr>
         <th>ID</th>
         <th>NAME</th>
         <th>EMAIL</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="user:${users}">
         <td th:text="${user.id}">Id</td>
         <td th:text="${user.firstName}">Name</td>
         <td th:text="${user.email}">Email</td>
+        <td><a th:href="@{user-update/{id}(id=${user.id})}">Edit</a></td>
+        <td><a th:href="@{user-delete/{id}(id=${user.id})}">Delete</a></td>
     </tr>
+    </tbody>
 </table>
+<p><a href="/user-create">Create user</a></p>
 </body>
 </html>
