@@ -3,7 +3,6 @@ package com.example.trainingProject.repository.impl;
 import com.example.trainingProject.config.JDBCConnect;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -21,7 +20,7 @@ public class UserRepoImpl implements UserRepo {
 
     private final JDBCConnect jdbcConnect;
 
-    @Autowired
+
     public UserRepoImpl(JDBCConnect jdbcConnect) {
         this.jdbcConnect = jdbcConnect;
     }
@@ -30,8 +29,7 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public List<User> findBetween(Long with, Long by) {
         List<User> users = new ArrayList<>();
-        try {
-            Connection connection = jdbcConnect.createConnection();
+        try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users " +
                     "WHERE id BETWEEN ? AND ?");
             preparedStatement.setLong(1, with);
@@ -46,7 +44,8 @@ public class UserRepoImpl implements UserRepo {
             }
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -66,9 +65,9 @@ public class UserRepoImpl implements UserRepo {
             } else {
                 return Optional.empty();
             }
-
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
 
     }
@@ -89,7 +88,8 @@ public class UserRepoImpl implements UserRepo {
             System.out.println(userId);
             return userId;
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -110,7 +110,8 @@ public class UserRepoImpl implements UserRepo {
             System.out.println(userId);
             return userId;
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -122,7 +123,8 @@ public class UserRepoImpl implements UserRepo {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 }

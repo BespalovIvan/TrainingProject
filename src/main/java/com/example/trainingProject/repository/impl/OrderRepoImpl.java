@@ -93,7 +93,8 @@ public class OrderRepoImpl implements OrderRepo {
             return Optional.ofNullable(result);
 
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -135,7 +136,8 @@ public class OrderRepoImpl implements OrderRepo {
             return orders;
 
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -149,7 +151,8 @@ public class OrderRepoImpl implements OrderRepo {
             System.out.println(orderId);
             return orderId;
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -163,7 +166,8 @@ public class OrderRepoImpl implements OrderRepo {
             insertToOrderProducts.setInt(3, countProducts);
             insertToOrderProducts.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
     }
 
@@ -181,7 +185,8 @@ public class OrderRepoImpl implements OrderRepo {
                 return gk.getLong("id");
             }
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
         throw new RuntimeException("Failed to create order");
     }
