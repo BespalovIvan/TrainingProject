@@ -6,7 +6,10 @@ import com.example.trainingProject.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +20,7 @@ public class UserRepoImpl implements UserRepo {
 
 
     private final JDBCConnect jdbcConnect;
+
     @Autowired
     public UserRepoImpl(JDBCConnect jdbcConnect) {
         this.jdbcConnect = jdbcConnect;
@@ -26,7 +30,8 @@ public class UserRepoImpl implements UserRepo {
     @Override
     public List<User> findBetween(Long with, Long by) {
         List<User> users = new ArrayList<>();
-        try (Connection connection = jdbcConnect.createConnection()) {
+        try {
+            Connection connection = jdbcConnect.createConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users " +
                     "WHERE id BETWEEN ? AND ?");
             preparedStatement.setLong(1, with);
@@ -58,7 +63,10 @@ public class UserRepoImpl implements UserRepo {
                         resultSet.getString(2),
                         resultSet.getString(3));
                 return Optional.of(result);
-            } else return Optional.empty();
+            } else {
+                return Optional.empty();
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }

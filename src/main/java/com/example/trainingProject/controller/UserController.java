@@ -2,7 +2,7 @@ package com.example.trainingProject.controller;
 
 
 import com.example.trainingProject.entity.User;
-import com.example.trainingProject.service.impl.UserServiceImpl;
+import com.example.trainingProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
 
-
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -31,8 +31,12 @@ public class UserController {
 
     @GetMapping("/user")
     public String findById(@RequestParam("id") Long id, Model model) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
+        Optional<User> optionalUser = userService.findById(id);
+        if (optionalUser.isPresent()) {
+            model.addAttribute("user", optionalUser.get());
+        } else {
+            model.addAttribute("user", new User());
+        }
         return "user";
     }
 }

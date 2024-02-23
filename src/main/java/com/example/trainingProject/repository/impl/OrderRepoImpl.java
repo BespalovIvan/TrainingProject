@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderRepoImpl implements OrderRepo {
@@ -30,8 +31,8 @@ public class OrderRepoImpl implements OrderRepo {
                     "JOIN order_products as op ON (o.id = op.order_id) " +
                     "JOIN products as p ON (op.product_id = p.id) " +
                     "JOIN users as u ON (o.user_id = u.id) WHERE order_id BETWEEN ? AND ?");
-            preparedStatement.setLong(1,with);
-            preparedStatement.setLong(2,by);
+            preparedStatement.setLong(1, with);
+            preparedStatement.setLong(2, by);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 if (orders.isEmpty()) {
@@ -58,12 +59,14 @@ public class OrderRepoImpl implements OrderRepo {
             }
             return orders;
         } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
         }
+
     }
 
     @Override
-    public Order findById(Long id) {
+    public Optional<Order> findById(Long id) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT o.id as order_id, " +
                     "o.user_id,u.name,u.email,o.datetime as date, op.product_id , op.product_quantity," +
@@ -87,7 +90,8 @@ public class OrderRepoImpl implements OrderRepo {
                             resultSet.getString(8), resultSet.getBigDecimal(9)));
                 }
             }
-            return result;
+            return Optional.ofNullable(result);
+
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }

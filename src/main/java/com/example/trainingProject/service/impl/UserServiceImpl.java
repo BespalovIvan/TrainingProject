@@ -1,7 +1,7 @@
 package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.entity.User;
-import com.example.trainingProject.repository.impl.UserRepoImpl;
+import com.example.trainingProject.repository.UserRepo;
 import com.example.trainingProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,23 +13,20 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
 
-    private final UserRepoImpl userRepo;
+    private final UserRepo userRepo;
 
     @Autowired
-    public UserServiceImpl(UserRepoImpl userRepoSpring) {
+    public UserServiceImpl(UserRepo userRepoSpring) {
         this.userRepo = userRepoSpring;
     }
 
 
-    public List<User> findBetween(Long with,Long by) {
-        return userRepo.findBetween(with,by);
+    public List<User> findBetween(Long with, Long by) {
+        return userRepo.findBetween(with, by);
     }
 
-    public User findById(Long id){
-        Optional<User> userOptional = userRepo.findById(id);
-        if (userOptional.isPresent()){
-            return userOptional.get();
-        }
-        throw new RuntimeException("User not found"); // не знаю как по другому реализовать
+    public Optional<User> findById(Long id) {
+        return userRepo.findById(id);
+
     }
 }

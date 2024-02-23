@@ -1,20 +1,53 @@
 package com.example.trainingProject.entity;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+
+@Entity
 public class Order {
-    private final Long id;
-    private final User user;
-    private final List<Product> products;
-    private final LocalDateTime createOrder;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToMany
+    private List<Product> products;
+    private LocalDateTime createOrder;
 
     public Order(Long id, User user, List<Product> products, LocalDateTime createOrder) {
         this.id = id;
 
         this.user = user;
         this.products = products;
+        this.createOrder = createOrder;
+    }
+
+    public Order() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void setCreateOrder(LocalDateTime createOrder) {
         this.createOrder = createOrder;
     }
 
