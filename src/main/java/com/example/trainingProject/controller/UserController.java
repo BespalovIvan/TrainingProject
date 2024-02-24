@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String findUsers(@RequestParam(value = "with", defaultValue = "1") Long with,
-                            @RequestParam(value = "by", defaultValue = "100000") Long by, Model model) {
+    public String findBetween(@RequestParam(value = "with", defaultValue = "1") Long with,
+                              @RequestParam(value = "by", defaultValue = "100000") Long by, Model model) {
         List<User> userList = userService.findBetween(with, by);
         model.addAttribute("users", userList);
         return "user-list";

@@ -10,6 +10,6 @@ public interface OrderRepo {
      List<Order> findBetween(Long with,Long by);
      Optional<Order> findById(Long id);
      List<Order> findByUserId(Long id);
-     Long createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts);
+     Long createOrder(Long userId, LocalDateTime dateTime, Long productId);
      void deleteOrder(Integer id);
 }

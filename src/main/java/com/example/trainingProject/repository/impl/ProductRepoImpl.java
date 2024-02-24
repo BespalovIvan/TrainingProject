@@ -3,6 +3,7 @@ package com.example.trainingProject.repository.impl;
 import com.example.trainingProject.config.JDBCConnect;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.repository.ProductRepo;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class ProductRepoImpl implements ProductRepo {
 
     private final JDBCConnect jdbcConnect;

@@ -1,11 +1,13 @@
 package com.example.trainingProject.controller;
 
 import com.example.trainingProject.entity.Order;
+import com.example.trainingProject.entity.Product;
+import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -38,4 +40,14 @@ public class OrderController {
         return "order";
     }
 
+    @GetMapping("/order-create")
+    public String createOrderForm(Order order) {
+        return "create-order";
+    }
+
+    @PostMapping("/order-create")
+    public String createOrder(Order order) {
+
+        return "redirect:/orders";
+    }
 }

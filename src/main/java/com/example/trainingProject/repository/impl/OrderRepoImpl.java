@@ -142,11 +142,11 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public Long createOrder(Long userId, LocalDateTime dateTime, Long productId, Integer countProducts) {
+    public Long createOrder(Long userId, LocalDateTime dateTime, Long productId) {
         try (Connection connection = jdbcConnect.createConnection()) {
             connection.setAutoCommit(false);
             Long orderId = createOrder(userId, dateTime, connection);
-            createOrderProduct(productId, countProducts, connection, orderId);
+            createOrderProduct(productId, connection, orderId);
             connection.commit();
             System.out.println(orderId);
             return orderId;
@@ -156,14 +156,13 @@ public class OrderRepoImpl implements OrderRepo {
         }
     }
 
-    private static void createOrderProduct(Long productId, Integer countProducts, Connection connection, Long order_id) {
+    private static void createOrderProduct(Long productId, Connection connection, Long order_id) {
         try {
             PreparedStatement insertToOrderProducts = connection.prepareStatement("INSERT INTO order_products " +
-                    "(order_id,product_id,product_quantity)" +
-                    "VALUES (?,?,?);");
+                    "(order_id,product_id)" +
+                    "VALUES (?,?);");
             insertToOrderProducts.setLong(1, order_id);
             insertToOrderProducts.setLong(2, productId);
-            insertToOrderProducts.setInt(3, countProducts);
             insertToOrderProducts.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
