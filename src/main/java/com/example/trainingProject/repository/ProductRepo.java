@@ -9,9 +9,10 @@ import java.util.Optional;
 
 public interface ProductRepo {
     List<Product> findAll();
+    Optional<Product> findById(Long productId);
 //    List<Product> findBetween(Long with, Long by);
 //    Optional<Product> findById(Long id);
-    Long createProduct (String name, BigDecimal price);
+    Product addProductToOrder(Long productId, Long orderId);
     Long updateProduct(Long id, String name, BigDecimal price);
     void deleteProductById(Long id);
 }

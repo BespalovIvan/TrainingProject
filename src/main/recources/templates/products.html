@@ -18,10 +18,10 @@
     </thead>
     <tbody>
     <tr th:each="product:${products}">
-        <td th:text="${product.title}">Name</td>
+        <td th:text="${product.title}" th:action >Name</td>
         <td th:text="${product.price}">Price</td>
         <td th:text="${product.createDate}">Date</td>
-        <td><a th:href="@{order-create/{id}(id=${product.id})}">Add to order</a></td>
+        <td><a th:href="@{order/create/{id}/(id=${product.id})}">Add to order</a></td>
         <td><input type="number" min="0"></td>
     </tr>
     </tbody>

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductRepoImpl implements ProductRepo {
@@ -36,7 +38,25 @@ public class ProductRepoImpl implements ProductRepo {
         }
     }
 
-//    @Override
+    @Override
+    public Optional<Product> findById(Long productId) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM products WHERE id = ?");
+            preparedStatement.setLong(1, productId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Optional<Product> optionalProduct = Optional.empty();
+            while (resultSet.next()) {
+                Product product = new Product(resultSet.getLong(1), resultSet.getString(2),
+                        resultSet.getBigDecimal(3), resultSet.getTimestamp(4).toLocalDateTime());
+                optionalProduct = Optional.of(product);
+            }
+            return optionalProduct;
+        } catch (SQLException e) {
+            throw new RuntimeException("invalid request");
+        }
+    }
+
+    //    @Override
 //    public List<Product> findBetween(Long with, Long by) {
 //        List<Product> products = new ArrayList<>();
 //        try (Connection connection = jdbcConnect.createConnection()) {
@@ -75,24 +95,34 @@ public class ProductRepoImpl implements ProductRepo {
 //    }
 
     @Override
-    public Long createProduct(String name, BigDecimal price) {
+    public Product addProductToOrder(Long productId, Long orderId) {
+        Product product = findById(productId).get();
         try (Connection connection = jdbcConnect.createConnection()) {
-            Long productId = -1L;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO products (name,price) VALUES (?,?)", new String[]{"id"});
-            preparedStatement.setString(1, name);
-            preparedStatement.setBigDecimal(2, price);
+                    .prepareStatement("INSERT INTO order_products (order_id,product_id,added_date_time) " +
+                            "VALUES (?,?,?)");
+            preparedStatement.setLong(1, orderId);
+            preparedStatement.setLong(2, product.getId());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.executeUpdate();
-            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                productId = generatedKeys.getLong("id");
-            }
-            System.out.println(productId);
-            return productId;
+            return product;
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public Long updateProduct(Long id, String name, BigDecimal price) {

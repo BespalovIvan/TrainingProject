@@ -22,6 +22,12 @@ public class Product {
         this.createDate = createDate;
     }
 
+    public Product(String title, BigDecimal price, LocalDateTime createDate) {
+        this.title = title;
+        this.price = price;
+        this.createDate = createDate;
+    }
+
     public Product() {
     }
 

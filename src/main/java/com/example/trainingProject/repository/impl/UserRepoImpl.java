@@ -85,7 +85,6 @@ public class UserRepoImpl implements UserRepo {
             if (generatedKeys.next()) {
                 userId = generatedKeys.getLong("id");
             }
-            System.out.println(userId);
             return userId;
         } catch (SQLException e) {
             e.printStackTrace();

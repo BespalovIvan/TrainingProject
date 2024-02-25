@@ -20,8 +20,18 @@ public class Order {
     private LocalDateTime orderUpdateDate;
     private OrderStatus status;
 
-    public Order(Long id, Long userId, Integer totalCost, LocalDateTime orderCreationDate, LocalDateTime orderUpdateDate, OrderStatus status) {
+    public Order(Long id, Long userId, Integer totalCost, LocalDateTime orderCreationDate,
+                 LocalDateTime orderUpdateDate, OrderStatus status) {
         this.id = id;
+        this.userId = userId;
+        this.totalCost = totalCost;
+        this.orderCreationDate = orderCreationDate;
+        this.orderUpdateDate = orderUpdateDate;
+        this.status = status;
+    }
+
+    public Order(Long userId, Integer totalCost, LocalDateTime orderCreationDate,
+                 LocalDateTime orderUpdateDate, OrderStatus status) {
         this.userId = userId;
         this.totalCost = totalCost;
         this.orderCreationDate = orderCreationDate;
