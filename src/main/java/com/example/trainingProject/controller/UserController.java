@@ -23,24 +23,24 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public String findBetween(@RequestParam(value = "with", defaultValue = "1") Long with,
-                              @RequestParam(value = "by", defaultValue = "100000") Long by, Model model) {
-        List<User> userList = userService.findBetween(with, by);
-        model.addAttribute("users", userList);
-        return "user-list";
-    }
-
-    @GetMapping("/user")
-    public String findById(@RequestParam("id") Long id, Model model) {
-        Optional<User> optionalUser = userService.findById(id);
-        if (optionalUser.isPresent()) {
-            model.addAttribute("user", optionalUser.get());
-        } else {
-            model.addAttribute("user", new User());
-        }
-        return "user";
-    }
+//    @GetMapping("/users")
+//    public String findBetween(@RequestParam(value = "with", defaultValue = "1") Long with,
+//                              @RequestParam(value = "by", defaultValue = "100000") Long by, Model model) {
+//        List<User> userList = userService.findBetween(with, by);
+//        model.addAttribute("users", userList);
+//        return "user-list";
+//    }
+//
+//    @GetMapping("/user")
+//    public String findById(@RequestParam("id") Long id, Model model) {
+//        Optional<User> optionalUser = userService.findById(id);
+//        if (optionalUser.isPresent()) {
+//            model.addAttribute("user", optionalUser.get());
+//        } else {
+//            model.addAttribute("user", new User());
+//        }
+//        return "user";
+//    }
 
     @GetMapping("/user-create")
     public String createUserForm(User user) {
@@ -49,7 +49,7 @@ public class UserController {
 
     @PostMapping("/user-create")
     public String createUser(User user) {
-        userService.createUser(user.getFirstName(), user.getEmail());
+        userService.createUser(user.getName(), user.getEmail());
         return "redirect:/users";
     }
 
@@ -59,19 +59,19 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        Optional<User> optionalUser = userService.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            model.addAttribute("user", user);
-        }
-        return "user-update";
-    }
+//    @GetMapping("/user-update/{id}")
+//    public String updateUserForm(@PathVariable("id") Long id, Model model) {
+//        Optional<User> optionalUser = userService.findById(id);
+//        if (optionalUser.isPresent()) {
+//            User user = optionalUser.get();
+//            model.addAttribute("user", user);
+//        }
+//        return "user-update";
+//    }
 
     @PostMapping("/user-update")
     public String updateUser(User user) {
-        userService.updateUserById(user.getId(), user.getFirstName(), user.getEmail());
+        userService.updateUserById(user.getId(), user.getName(), user.getEmail());
         return "redirect:/users";
     }
 

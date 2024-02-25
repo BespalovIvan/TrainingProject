@@ -3,6 +3,7 @@ package com.example.trainingProject.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -10,13 +11,15 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
+    private String title;
     private BigDecimal price;
+    private LocalDateTime createDate;
 
-    public Product(Long id, String name, BigDecimal price) {
+    public Product(Long id, String title, BigDecimal price, LocalDateTime createDate) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.price = price;
+        this.createDate = createDate;
     }
 
     public Product() {
@@ -30,12 +33,12 @@ public class Product {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public BigDecimal getPrice() {
@@ -46,10 +49,12 @@ public class Product {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return " name = " + name +
-                " , price = " + price;
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     @Override
@@ -57,11 +62,21 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(price, product.price);
+        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(createDate, product.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price);
+        return Objects.hash(id, title, price, createDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", createDate=" + createDate +
+                '}';
     }
 }

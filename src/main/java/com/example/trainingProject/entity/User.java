@@ -2,6 +2,7 @@ package com.example.trainingProject.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -9,13 +10,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String firstName;
+    private String name;
     private String email;
+    private LocalDateTime createDate;
 
-    public User(Long id, String firstName, String email) {
+    public User(Long id, String name, String email, LocalDateTime createDate) {
         this.id = id;
-        this.firstName = firstName;
+        this.name = name;
         this.email = email;
+        this.createDate = createDate;
     }
 
     public User() {
@@ -29,12 +32,12 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -45,10 +48,12 @@ public class User {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "name='" + firstName + '\'' +
-                ", email='" + email + '\'' ;
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
     }
 
     @Override
@@ -56,11 +61,21 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(email, user.email);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(createDate, user.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, email);
+        return Objects.hash(id, name, email, createDate);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", createDate=" + createDate +
+                '}';
     }
 }

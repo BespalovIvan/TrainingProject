@@ -6,13 +6,9 @@ import com.example.trainingProject.repository.ProductRepo;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ProductRepoImpl implements ProductRepo {
@@ -24,18 +20,15 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public List<Product> findBetween(Long with, Long by) {
+    public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM products " +
-                    "WHERE id BETWEEN ? AND ?");
-            preparedStatement.setLong(1, with);
-            preparedStatement.setLong(2, by);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM products");
             while (resultSet.next()) {
                 products.add(new Product(resultSet.getLong(1),
                         resultSet.getString(2),
-                        resultSet.getBigDecimal(3)));
+                        resultSet.getBigDecimal(3), resultSet.getTimestamp(4).toLocalDateTime()));
             }
             return products;
         } catch (SQLException e) {
@@ -43,23 +36,43 @@ public class ProductRepoImpl implements ProductRepo {
         }
     }
 
-    @Override
-    public Optional<Product> findById(Long id) {
-        try (Connection connection = jdbcConnect.createConnection()) {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("SELECT * FROM products WHERE id = ?");
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                Product result = new Product(resultSet.getLong(1)
-                        , resultSet.getString(2)
-                        , resultSet.getBigDecimal(3));
-                return Optional.of(result);
-            } else return Optional.empty();
-        } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
-        }
-    }
+//    @Override
+//    public List<Product> findBetween(Long with, Long by) {
+//        List<Product> products = new ArrayList<>();
+//        try (Connection connection = jdbcConnect.createConnection()) {
+//            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM products " +
+//                    "WHERE id BETWEEN ? AND ?");
+//            preparedStatement.setLong(1, with);
+//            preparedStatement.setLong(2, by);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                products.add(new Product(resultSet.getLong(1),
+//                        resultSet.getString(2),
+//                        resultSet.getBigDecimal(3)));
+//            }
+//            return products;
+//        } catch (SQLException e) {
+//            throw new RuntimeException("invalid request");
+//        }
+//    }
+
+//    @Override
+//    public Optional<Product> findById(Long id) {
+//        try (Connection connection = jdbcConnect.createConnection()) {
+//            PreparedStatement preparedStatement = connection
+//                    .prepareStatement("SELECT * FROM products WHERE id = ?");
+//            preparedStatement.setLong(1, id);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            if (resultSet.next()) {
+//                Product result = new Product(resultSet.getLong(1)
+//                        , resultSet.getString(2)
+//                        , resultSet.getBigDecimal(3));
+//                return Optional.of(result);
+//            } else return Optional.empty();
+//        } catch (SQLException e) {
+//            throw new RuntimeException("invalid request");
+//        }
+//    }
 
     @Override
     public Long createProduct(String name, BigDecimal price) {

@@ -12,22 +12,24 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>User</th>
-        <th>Products</th>
-        <th>Date</th>
+        <th>User ID</th>
+        <th>Total cost</th>
+        <th>Create Date</th>
+        <th>Update Date</th>
+        <th>Status</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="order:${orders}">
         <td th:text="${order.id}">Id</td>
-        <td th:text="${order.user}">Name</td>
-        <td th:text="${order.products}">Name</td>
-        <td th:text="${order.createOrder}">Date</td>
+        <td th:text="${order.userId}">User Id</td>
+        <td th:text="${order.totalCost}">Total</td>
+        <td th:text="${order.orderCreationDate}">Create date</td>
+        <td th:text="${order.orderUpdateDate}">Update date</td>
+        <td th:text="${order.status}">Status</td>
         <td><a th:href="@{order-update/{id}(id=${order.id})}">Edit</a></td>
-        <td><a th:href="@{order-delete/{id}(id=${order.id})}">Delete</a></td>
     </tr>
     </tbody>
 </table>
-<p><a href="/order-create">Create order</a></p>
 </body>
 </html>

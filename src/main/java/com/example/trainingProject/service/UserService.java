@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<User> findBetween(Long with, Long by);
-
-    Optional<User> findById(Long id);
+//    List<User> findBetween(Long with, Long by);
+//
+//    Optional<User> findById(Long id);
 
     Long createUser(String name,String email);
     void deleteUserById(Long id);

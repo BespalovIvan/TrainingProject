@@ -19,13 +19,13 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public List<User> findBetween(Long with, Long by) {
-        return userRepo.findBetween(with, by);
-    }
-
-    public Optional<User> findById(Long id) {
-        return userRepo.findById(id);
-    }
+//    public List<User> findBetween(Long with, Long by) {
+//        return userRepo.findBetween(with, by);
+//    }
+//
+//    public Optional<User> findById(Long id) {
+//        return userRepo.findById(id);
+//    }
 
     public Long createUser(String name, String email) {
         return userRepo.createUser(name, email);

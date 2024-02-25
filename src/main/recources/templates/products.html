@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+<body>
+<h2>Products</h2>
+<table>
+    <thead>
+    <tr>
+        <th>TITLE</th>
+        <th>PRICE</th>
+        <th>CREATE DATE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product:${products}">
+        <td th:text="${product.title}">Name</td>
+        <td th:text="${product.price}">Price</td>
+        <td th:text="${product.createDate}">Date</td>
+        <td><a th:href="@{order-create/{id}(id=${product.id})}">Add to order</a></td>
+        <td><input type="number" min="0"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

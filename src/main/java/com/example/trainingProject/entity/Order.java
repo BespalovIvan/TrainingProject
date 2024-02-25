@@ -5,7 +5,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -15,50 +14,70 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long userId;
+    private Integer totalCost;
+    private LocalDateTime orderCreationDate;
+    private LocalDateTime orderUpdateDate;
+    private OrderStatus status;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-    @OneToMany
-    private List<Product> products;
-    private LocalDateTime createOrder;
-
-    public Order(Long id, User user, List<Product> products, LocalDateTime createOrder) {
+    public Order(Long id, Long userId, Integer totalCost, LocalDateTime orderCreationDate, LocalDateTime orderUpdateDate, OrderStatus status) {
         this.id = id;
-
-        this.user = user;
-        this.products = products;
-        this.createOrder = createOrder;
+        this.userId = userId;
+        this.totalCost = totalCost;
+        this.orderCreationDate = orderCreationDate;
+        this.orderUpdateDate = orderUpdateDate;
+        this.status = status;
     }
 
     public Order() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public void setCreateOrder(LocalDateTime createOrder) {
-        this.createOrder = createOrder;
+    public Integer getTotalCost() {
+        return totalCost;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id= " + id +
-                ", " + user +
-                ", Products : " + products +
-                ", createOrder = " + createOrder +
-                '}';
+    public void setTotalCost(Integer totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public LocalDateTime getOrderCreationDate() {
+        return orderCreationDate;
+    }
+
+    public void setOrderCreationDate(LocalDateTime orderCreationDate) {
+        this.orderCreationDate = orderCreationDate;
+    }
+
+    public LocalDateTime getOrderUpdateDate() {
+        return orderUpdateDate;
+    }
+
+    public void setOrderUpdateDate(LocalDateTime orderUpdateDate) {
+        this.orderUpdateDate = orderUpdateDate;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -66,27 +85,23 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && Objects.equals(user, order.user) && Objects.equals(products, order.products) && Objects.equals(createOrder, order.createOrder);
+        return Objects.equals(id, order.id) && Objects.equals(userId, order.userId) && Objects.equals(totalCost, order.totalCost) && Objects.equals(orderCreationDate, order.orderCreationDate) && Objects.equals(orderUpdateDate, order.orderUpdateDate) && status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, products, createOrder);
+        return Objects.hash(id, userId, totalCost, orderCreationDate, orderUpdateDate, status);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public LocalDateTime getCreateOrder() {
-        return createOrder;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", totalCost=" + totalCost +
+                ", orderCreationDate=" + orderCreationDate +
+                ", orderUpdateDate=" + orderUpdateDate +
+                ", status=" + status +
+                '}';
     }
 }

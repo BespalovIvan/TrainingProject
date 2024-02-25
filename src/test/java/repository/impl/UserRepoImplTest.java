@@ -11,13 +11,5 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 public class UserRepoImplTest {
-    @Test
-    public void testFindBetween() {
-        UserRepoImpl userRepo = new UserRepoImpl(new JDBCConnect());
-        List<User> users = userRepo.findBetween(1L,2L);
-        List<User> expected = new ArrayList<>();
-        expected.add(new User(1L,"Ivan","bespalovivan@mail.ru"));
-        expected.add(new User(2L,"Kirill","melnikKirill@yandex.ru"));
-        assertThat(users).isEqualTo(expected);
-    }
+
 }
