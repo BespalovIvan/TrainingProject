@@ -13,15 +13,15 @@
     <tr>
         <th>TITLE</th>
         <th>PRICE</th>
-        <th>CREATE DATE</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="product:${products}">
         <td th:text="${product.title}" th:action >Name</td>
         <td th:text="${product.price}">Price</td>
-        <td th:text="${product.createDate}">Date</td>
-        <td><a th:href="@{order/create/{id}/(id=${product.id})}">Add to order</a></td>
+        <td><form method="POST" th:action="@{order-create(id=${product.id})}">
+            <button type="submit" name="submit" value="value" class="link-button">Add to order</button>
+        </form></td>
         <td><input type="number" min="0"></td>
     </tr>
     </tbody>

@@ -2,16 +2,16 @@ package com.example.trainingProject.entity;
 
 import java.util.Objects;
 
-public class OrderProducts {
+public class OrderProduct {
     private Order order;
     private Product product;
 
-    public OrderProducts(Order order, Product product) {
+    public OrderProduct(Order order, Product product) {
         this.order = order;
         this.product = product;
     }
 
-    public OrderProducts() {
+    public OrderProduct() {
     }
 
     public Order getOrder() {
@@ -34,7 +34,7 @@ public class OrderProducts {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderProducts that = (OrderProducts) o;
+        OrderProduct that = (OrderProduct) o;
         return Objects.equals(order, that.order) && Objects.equals(product, that.product);
     }
 

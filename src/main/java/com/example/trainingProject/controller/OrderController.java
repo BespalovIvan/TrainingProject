@@ -14,6 +14,7 @@ import java.util.List;
 @Controller
 public class OrderController {
     private final OrderService orderService;
+    private final Long idUser = 11L;
 
 
     public OrderController(OrderService orderService) {
@@ -27,9 +28,9 @@ public class OrderController {
         return "orders";
     }
 
-    @PostMapping ("order/create")
-    public String createOrder(Long userId,Long productId) {
-        orderService.createOrder(userId, productId);
+    @PostMapping("order-create")
+    public String createOrder(@RequestParam("id") Long productId) {
+        orderService.createOrder(idUser, productId);
         return "redirect:/orders";
     }
 }

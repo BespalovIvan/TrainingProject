@@ -1,7 +1,7 @@
 package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.OrderProducts;
+import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.repository.ProductRepo;
 import com.example.trainingProject.service.OrderService;
@@ -27,8 +27,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderProducts createOrder(Long userId, Long productId) {
+    public OrderProduct createOrder(Long userId, Long productId) {
         Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
-        return new OrderProducts(order, productRepo.addProductToOrder(productId, order.getId()));
+        return new OrderProduct(order, productRepo.addProductToOrder(productId, order.getId()));
     }
 }
