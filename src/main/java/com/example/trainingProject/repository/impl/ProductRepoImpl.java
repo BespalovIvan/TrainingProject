@@ -39,6 +39,25 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
+    public List<Product> findProductByOrderId(Long orderId) {
+        List<Product> orderProducts = new ArrayList<>();
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT op.order_id,op.product_id," +
+                    "p.title,p.price,op.added_date_time FROM order_products as op " +
+                    "JOIN products as p ON op.product_id=p.id WHERE order_id = ?");
+            preparedStatement.setLong(1,orderId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                orderProducts.add(new Product(resultSet.getLong(2), resultSet.getString(3),
+                        resultSet.getBigDecimal(4), resultSet.getTimestamp(5).toLocalDateTime()));
+            }
+            return orderProducts;
+        } catch (SQLException e) {
+            throw new RuntimeException("invalid request");
+        }
+    }
+
+    @Override
     public Optional<Product> findById(Long productId) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM products WHERE id = ?");
@@ -110,19 +129,6 @@ public class ProductRepoImpl implements ProductRepo {
             throw new RuntimeException("invalid request");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public Long updateProduct(Long id, String name, BigDecimal price) {

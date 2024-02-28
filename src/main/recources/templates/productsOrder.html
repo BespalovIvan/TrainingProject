@@ -7,9 +7,12 @@
           href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
 </head>
 <body>
-<h2>Products</h2>
+<h2>Products Order</h2>
 <td><form method="GET" th:action="@{/orders}">
-    <button type="submit"  class="link-button">My Orders</button>
+    <button type="submit"  class="link-button">Orders</button></form>
+
+    <form method="GET" th:action="@{/products}">
+        <button type="submit"  class="link-button">Products</button></form></td>
 <table>
     <thead>
     <tr>
@@ -18,14 +21,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product:${products}">
-        <td th:text="${product.title}">Name</td>
+    <tr th:each="product:${productsOrder}">
+        <td th:text="${product.title}" >Name</td>
         <td th:text="${product.price}">Price</td>
-        <td><form method="POST" th:action="@{order-create(id=${product.id})}">
-            <button type="submit" name="submit" value="value" class="link-button">Add to order</button>
-        </form></td>
-        <td><input type="number" min="0"></td>
     </tr>
+    </form></td>
     </tbody>
 </table>
 </body>

@@ -31,6 +31,6 @@ public class OrderController {
     @PostMapping("order-create")
     public String createOrder(@RequestParam("id") Long productId) {
         orderService.createOrder(idUser, productId);
-        return "redirect:/orders";
+        return "redirect:/products";
     }
 }

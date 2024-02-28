@@ -39,6 +39,28 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
+    public Optional<Order> findById(Long id) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("SELECT * FROM orders WHERE id = ?");
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Optional<Order> orderOptional = Optional.empty();
+            while (resultSet.next()) {
+                Order order = new Order(resultSet.getLong(1), resultSet.getLong(2),
+                        resultSet.getInt(3), resultSet.getTimestamp(4).toLocalDateTime(),
+                        resultSet.getTimestamp(5).toLocalDateTime(),
+                        OrderStatus.valueOf(resultSet.getString(6)));
+                orderOptional = Optional.of(order);
+            }
+            return orderOptional;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
     public Optional<Order> findNewOrderByUserId(Long id) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement

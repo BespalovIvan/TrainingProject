@@ -9,4 +9,5 @@ public interface ProductService {
 
 //    Optional<Product> findById(Long id);
     List<Product> findAll();
+    List<Product> findProductByOrderId(Long orderId);
 }
