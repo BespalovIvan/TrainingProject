@@ -33,4 +33,9 @@ public class OrderController {
         orderService.createOrder(idUser, productId);
         return "redirect:/products";
     }
+    @PostMapping("status-update")
+    public String changeStatus(@RequestParam("id") Long userId){
+        orderService.changeStatusOrder(userId);
+        return "redirect:/orders";
+    }
 }

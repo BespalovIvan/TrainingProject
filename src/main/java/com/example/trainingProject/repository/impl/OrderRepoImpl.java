@@ -110,6 +110,19 @@ public class OrderRepoImpl implements OrderRepo {
 
     }
 
+    @Override
+    public void changeStatusOrder(Long userId, Long orderId) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE orders SET " +
+                    "status = ? WHERE id = ?");
+            preparedStatement.setString(1, "READY");
+            preparedStatement.setLong(2, orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
 
     @Override
     public void deleteOrder(Integer id) {

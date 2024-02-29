@@ -8,6 +8,7 @@ import com.example.trainingProject.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -30,5 +31,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderProduct createOrder(Long userId, Long productId) {
         Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
         return new OrderProduct(order, productRepo.addProductToOrder(productId, order.getId()));
+    }
+
+    @Override
+    public void changeStatusOrder(Long userId) {
+        Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
+        orderRepo.changeStatusOrder(userId, order.getId());
     }
 }

@@ -10,6 +10,7 @@ public interface OrderService {
 
     //    Optional<Order> findById(Long id);
     List<Order> findAll();
+    void changeStatusOrder(Long userId);
 
     OrderProduct createOrder(Long userId, Long productId);
 }
