@@ -27,15 +27,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepo.findAll();
     }
 
-    @Override
-    public OrderProduct createOrder(Long userId, Long productId) {
-        Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
-        return new OrderProduct(order, productRepo.addProductToOrder(productId, order.getId()));
-    }
+
 
     @Override
-    public void changeStatusOrder(Long userId) {
-        Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
-        orderRepo.changeStatusOrder(userId, order.getId());
+    public void changeStatusOrder(Long orderId) {
+        Optional<Order> orderOptional = orderRepo.findById(orderId);
+        orderOptional.ifPresent(order -> orderRepo.changeStatusOrder(order.getId()));
     }
 }

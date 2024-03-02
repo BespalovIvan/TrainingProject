@@ -5,6 +5,7 @@ import com.example.trainingProject.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Controller
 public class ProductController {
     private final ProductService productService;
+    private final Long idUser = 11L;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -29,5 +31,11 @@ public class ProductController {
         List<Product> products = productService.findProductByOrderId(orderId);
         model.addAttribute("productsOrder", products);
         return "productsOrder";
+    }
+
+    @PostMapping("add-product")
+    public String addProductToOrder(@RequestParam("id") Long productId) {
+        productService.addProductToOrder(idUser, productId);
+        return "redirect:/products";
     }
 }

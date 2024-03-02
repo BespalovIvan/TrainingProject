@@ -111,7 +111,7 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public void changeStatusOrder(Long userId, Long orderId) {
+    public void changeStatusOrder(Long orderId) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE orders SET " +
                     "status = ? WHERE id = ?");

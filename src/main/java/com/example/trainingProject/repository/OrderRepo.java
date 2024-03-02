@@ -14,6 +14,6 @@ public interface OrderRepo {
      Optional<Order> findNewOrderByUserId(Long id);
      Order createOrder(Long userId);
      Optional<Order> findById(Long id);
-     void changeStatusOrder(Long userId,Long orderId);
+     void changeStatusOrder(Long orderId);
      void deleteOrder(Integer id);
 }

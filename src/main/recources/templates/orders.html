@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Shop</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+          href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}"/>
 </head>
 <body>
 <h1>Orders</h1>
@@ -27,13 +27,16 @@
         <td th:text="${order.orderCreationDate}">Create date</td>
         <td th:text="${order.orderUpdateDate}">Update date</td>
         <td th:text="${order.status}">Status</td>
-        <td><a  th:href="@{/products-order(id=${order.id})}">Order products</a></td>
-        <td><form  method="POST" th:action="@{status-update(id=${order.userId})}">
-            <button  type="submit" name="submit" value="value" class="link-button" >Confirm</button>
-        </form></td>
+        <td><a th:href="@{/products-order(id=${order.id})}">Order products</a></td>
+        <td>
+            <form th:if = '${order.status.toString() == "NEW"}' method="POST" th:action="@{status-update(id=${order.id})}">
+                <button type="submit" name="submit" value="value" class="link-button">Confirm</button>
+            </form>
+        </td>
     </tr>
     <form method="GET" th:action="@{/products}">
-        <button type="submit"  class="link-button">All Products</button></form>
+        <button type="submit" class="link-button">All Products</button>
+    </form>
     </tbody>
 </table>
 </body>
