@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}"/>
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet" />
+    <form method="GET" th:action="@{/products}">
+        <button type="submit" class="link-button">Products</button>
+    </form>
+    <form method="GET" th:action="@{/user}">
+        <button type="submit" class="link-button">Profile</button>
+    </form>
 </head>
 <body>
 <h1>Orders</h1>
-<table>
+<table >
     <thead>
     <tr>
         <th>ID</th>
-        <th>User ID</th>
         <th>Total cost</th>
         <th>Create Date</th>
         <th>Update Date</th>
@@ -22,7 +26,6 @@
     <tbody>
     <tr th:each="order:${orders}">
         <td th:text="${order.id}">Id</td>
-        <td th:text="${order.userId}">User Id</td>
         <td th:text="${order.totalCost}">Total</td>
         <td th:text="${order.orderCreationDate}">Create date</td>
         <td th:text="${order.orderUpdateDate}">Update date</td>
@@ -34,9 +37,6 @@
             </form>
         </td>
     </tr>
-    <form method="GET" th:action="@{/products}">
-        <button type="submit" class="link-button">All Products</button>
-    </form>
     </tbody>
 </table>
 </body>

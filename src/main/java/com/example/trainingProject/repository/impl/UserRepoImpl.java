@@ -49,28 +49,28 @@ public class UserRepoImpl implements UserRepo {
 //        }
 //    }
 
-//    @Override
-//    public Optional<User> findById(Long id) {
-//        try (Connection connection = jdbcConnect.createConnection()) {
-//            PreparedStatement preparedStatement = connection
-//                    .prepareStatement("SELECT * FROM users WHERE id = ?");
-//            preparedStatement.setLong(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            if (resultSet.next()) {
-//                User result = new User(
-//                        resultSet.getLong(1),
-//                        resultSet.getString(2),
-//                        resultSet.getString(3));
-//                return Optional.of(result);
-//            } else {
-//                return Optional.empty();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("invalid request", e);
-//        }
-//
-//    }
+    @Override
+    public Optional<User> findById(Long id) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT * FROM users WHERE id = ?");
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                User result = new User(resultSet.getLong(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getTimestamp(4).toLocalDateTime());
+                return Optional.of(result);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+
+    }
 
     @Override
     public Long createUser(String name, String email) {

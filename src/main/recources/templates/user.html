@@ -2,18 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet" />
     <title>Shop</title>
+    <form method="GET" th:action="@{/orders}">
+        <button type="submit" class="link-button">Orders</button>
+    </form>
+    <form method="GET" th:action="@{/products}">
+        <button type="submit" class="link-button">Products</button>
+    </form>
 </head>
 <body>
+
 <h1>User</h1>
 <table>
     <tr>
-        <th>ID</th>
         <th>NAME</th>
         <th>EMAIL</th>
     </tr>
-        <td th:text="${user.id}">Id</td>
-        <td th:text="${user.firstName}">Name</td>
+        <td th:text="${user.name}">Name</td>
         <td th:text="${user.email}">Email</td>
     </tr>
 </table>

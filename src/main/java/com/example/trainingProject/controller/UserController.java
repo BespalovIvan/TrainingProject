@@ -8,22 +8,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final Long idUser = 11L;
 
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-//    @GetMapping("/users")
+    //    @GetMapping("/users")
 //    public String findBetween(@RequestParam(value = "with", defaultValue = "1") Long with,
 //                              @RequestParam(value = "by", defaultValue = "100000") Long by, Model model) {
 //        List<User> userList = userService.findBetween(with, by);
@@ -31,16 +30,16 @@ public class UserController {
 //        return "user-list";
 //    }
 //
-//    @GetMapping("/user")
-//    public String findById(@RequestParam("id") Long id, Model model) {
-//        Optional<User> optionalUser = userService.findById(id);
-//        if (optionalUser.isPresent()) {
-//            model.addAttribute("user", optionalUser.get());
-//        } else {
-//            model.addAttribute("user", new User());
-//        }
-//        return "user";
-//    }
+    @GetMapping("/user")
+    public String findById(Model model) {
+        Optional<User> optionalUser = userService.findById(idUser);
+        if (optionalUser.isPresent()) {
+            model.addAttribute("user", optionalUser.get());
+        } else {
+            model.addAttribute("user", new User());
+        }
+        return "user";
+    }
 
     @GetMapping("/user-create")
     public String createUserForm(User user) {

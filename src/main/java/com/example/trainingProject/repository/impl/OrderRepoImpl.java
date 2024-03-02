@@ -6,8 +6,10 @@ import com.example.trainingProject.entity.OrderStatus;
 import com.example.trainingProject.repository.OrderRepo;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +21,6 @@ public class OrderRepoImpl implements OrderRepo {
     public OrderRepoImpl(JDBCConnect jdbcConnect) {
         this.jdbcConnect = jdbcConnect;
     }
-
     @Override
     public List<Order> findAll() {
         List<Order> orders = new ArrayList<>();
@@ -28,7 +29,8 @@ public class OrderRepoImpl implements OrderRepo {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");
             while (resultSet.next()) {
                 orders.add(new Order(resultSet.getLong(1), resultSet.getLong(2),
-                        resultSet.getInt(3), resultSet.getTimestamp(4).toLocalDateTime(),
+                        resultSet.getInt(3),
+                        resultSet.getTimestamp(4).toLocalDateTime(),
                         resultSet.getTimestamp(5).toLocalDateTime(),
                         OrderStatus.valueOf(resultSet.getString(6))));
             }
@@ -86,7 +88,11 @@ public class OrderRepoImpl implements OrderRepo {
 
     @Override
     public Order createOrder(Long userId) {
-        Order order = new Order(userId, 0, LocalDateTime.now(), LocalDateTime.now(), OrderStatus.NEW);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        Order order = new Order(userId, 0, LocalDateTime.parse(now.format(formatter),formatter),
+                LocalDateTime.parse(now.format(formatter),formatter)
+                , OrderStatus.NEW);
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO orders (user_id,total_cost,create_date_time," +
@@ -107,9 +113,7 @@ public class OrderRepoImpl implements OrderRepo {
             throw new RuntimeException("invalid request", e);
         }
         return order;
-
     }
-
     @Override
     public void changeStatusOrder(Long orderId) {
         try (Connection connection = jdbcConnect.createConnection()) {
@@ -123,9 +127,21 @@ public class OrderRepoImpl implements OrderRepo {
             throw new RuntimeException("invalid request", e);
         }
     }
+    @Override
+    public void updateTotalCost(Long orderId, BigDecimal sum) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("UPDATE orders SET total_cost = total_cost + ? WHERE id = ?");
+            preparedStatement.setBigDecimal(1,sum);
+            preparedStatement.setLong(2,orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
 
     @Override
     public void deleteOrder(Integer id) {
-
     }
 }

@@ -1,13 +1,13 @@
 package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.repository.ProductRepo;
 import com.example.trainingProject.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +40,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public OrderProduct addProductToOrder(Long userId, Long productId) {
+    public void addProductToOrder(Long userId, Long productId) {
+        BigDecimal totalCost = BigDecimal.valueOf(0);
         Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
-        return new OrderProduct(order, productRepo.addProductToOrder(productId, order.getId()));
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            totalCost = totalCost.add(product.getPrice());
+            orderRepo.updateTotalCost(order.getId(), totalCost);
+        }
+        productRepo.addProductToOrder(productId, order.getId());
     }
 
     //

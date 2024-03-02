@@ -3,16 +3,17 @@
 <head>
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../../../css/gtvg.css" th:href="@{/css/gtvg.css}"/>
-</head>
-<body>
-<h2>Products</h2>
-<td>
+    <link th:href="@{/styles/css/main.css}" rel="stylesheet" />
     <form method="GET" th:action="@{/orders}">
         <button type="submit" class="link-button">Orders</button>
     </form>
-</td>
+    <form method="GET" th:action="@{/user}">
+        <button type="submit" class="link-button">Profile</button>
+    </form>
+</head>
+<body>
+
+<h2>Products</h2>
 <table>
     <thead>
     <tr>
