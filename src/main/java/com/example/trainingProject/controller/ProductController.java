@@ -1,5 +1,6 @@
 package com.example.trainingProject.controller;
 
+import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class ProductController {
 
     @GetMapping("/products-order")
     public String findProductByOrder(@RequestParam("id") Long orderId, Model model) {
-        List<Product> products = productService.findProductByOrderId(orderId);
+        List<OrderProduct> products = productService.findProductByOrderId(orderId);
         model.addAttribute("productsOrder", products);
         return "productsOrder";
     }
@@ -37,5 +38,11 @@ public class ProductController {
     public String addProductToOrder(@RequestParam("id") Long productId) {
         productService.addProductToOrder(idUser, productId);
         return "redirect:/products";
+    }
+
+    @PostMapping("delete-product")
+    public String deleteProductFromOrder(@RequestParam("order_id") Long orderId,@RequestParam("product_id") Long productId) {
+        productService.deleteProductFromOrder(orderId, productId);
+        return "redirect:/productsOrder";
     }
 }

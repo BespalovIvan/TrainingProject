@@ -1,11 +1,8 @@
 package com.example.trainingProject.repository;
 
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.OrderStatus;
-import org.aspectj.weaver.ast.Or;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +13,7 @@ public interface OrderRepo {
      Order createOrder(Long userId);
      Optional<Order> findById(Long id);
      void changeStatusOrder(Long orderId);
-     void updateTotalCost(Long orderId, BigDecimal sum);
+     void plusTotalCost(Long orderId, BigDecimal sum);
+     void minusTotalCost(Long orderId, BigDecimal sum);
      void deleteOrder(Integer id);
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -15,13 +16,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
-    private Integer totalCost;
+    private BigDecimal totalCost;
     private LocalDateTime orderCreationDate;
     private LocalDateTime orderUpdateDate;
     private OrderStatus status;
 
-    public Order(Long id, Long userId, Integer totalCost, LocalDateTime orderCreationDate,
-                 LocalDateTime orderUpdateDate, OrderStatus status) {
+    public Order(Long id, Long userId, BigDecimal totalCost, LocalDateTime orderCreationDate, LocalDateTime orderUpdateDate, OrderStatus status) {
         this.id = id;
         this.userId = userId;
         this.totalCost = totalCost;
@@ -30,8 +30,7 @@ public class Order {
         this.status = status;
     }
 
-    public Order(Long userId, Integer totalCost, LocalDateTime orderCreationDate,
-                 LocalDateTime orderUpdateDate, OrderStatus status) {
+    public Order(Long userId, BigDecimal totalCost, LocalDateTime orderCreationDate, LocalDateTime orderUpdateDate, OrderStatus status) {
         this.userId = userId;
         this.totalCost = totalCost;
         this.orderCreationDate = orderCreationDate;
@@ -58,11 +57,11 @@ public class Order {
         this.userId = userId;
     }
 
-    public Integer getTotalCost() {
+    public BigDecimal getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Integer totalCost) {
+    public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
     }
 

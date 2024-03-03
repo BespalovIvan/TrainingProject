@@ -1,6 +1,7 @@
 package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.entity.Order;
+import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.repository.ProductRepo;
@@ -29,8 +30,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductByOrderId(Long orderId) {
-        List<Product> products = new ArrayList<>();
+    public List<OrderProduct> findProductByOrderId(Long orderId) {
+        List<OrderProduct> products = new ArrayList<>();
         Optional<Order> orderOptional = orderRepo.findById(orderId);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
@@ -47,14 +48,23 @@ public class ProductServiceImpl implements ProductService {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             totalCost = totalCost.add(product.getPrice());
-            orderRepo.updateTotalCost(order.getId(), totalCost);
+            orderRepo.plusTotalCost(order.getId(), totalCost);
         }
         productRepo.addProductToOrder(productId, order.getId());
     }
 
-    //
-//    @Override
-//    public Optional<Product> findById(Long id) {
-//        return productRepo.findById(id);
-//    }
+    @Override
+    public void deleteProductFromOrder(Long orderId, Long productId) {
+        Optional<Order> orderOptional = orderRepo.findById(orderId);
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            if (order.getStatus().toString().equals("NEW")&&optionalProduct.isPresent()) {
+                productRepo.deleteProductFromOrder(orderId, productId);
+                Product product = optionalProduct.get();
+                BigDecimal totalCost = order.getTotalCost().subtract(product.getPrice());
+                orderRepo.minusTotalCost(order.getId(),totalCost);
+            }
+        }
+    }
 }

@@ -4,25 +4,32 @@
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/styles/css/main.css}" rel="stylesheet" />
+    <td><form method="GET" th:action="@{/orders}">
+        <button type="submit"  class="link-button">Orders</button></form>
+        <form method="GET" th:action="@{/products}">
+            <button type="submit"  class="link-button">Products</button></form></td>
 </head>
 <body>
 <h2>Products Order</h2>
-<td><form method="GET" th:action="@{/orders}">
-    <button type="submit"  class="link-button">Orders</button></form>
-
-    <form method="GET" th:action="@{/products}">
-        <button type="submit"  class="link-button">All products</button></form></td>
 <table>
     <thead>
     <tr>
         <th>TITLE</th>
-        <th>PRICE</th>
+        <th>COUNT</th>
+        <th>SUM</th>
+
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product:${productsOrder}">
-        <td th:text="${product.title}" >Name</td>
-        <td th:text="${product.price}">Price</td>
+    <tr th:each="orderProduct:${productsOrder}">
+        <td th:text="${orderProduct.titleProduct}" >Title</td>
+        <td th:text="${orderProduct.count}">Count</td>
+        <td th:text="${orderProduct.sum}">Sum</td>
+        <td>
+            <form method="POST" th:action="@{delete-product(order_id=${orderProduct.order_id}, product_id=${orderProduct.product_id})}">
+                <button type="submit" name="submit" value="value" class="link-button">Delete</button>
+            </form>
+        </td>
     </tr>
     </form></td>
     </tbody>
