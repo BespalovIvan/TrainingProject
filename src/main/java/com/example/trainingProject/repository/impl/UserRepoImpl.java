@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -24,30 +22,6 @@ public class UserRepoImpl implements UserRepo {
     public UserRepoImpl(JDBCConnect jdbcConnect) {
         this.jdbcConnect = jdbcConnect;
     }
-
-
-//    @Override
-//    public List<User> findBetween(Long with, Long by) {
-//        List<User> users = new ArrayList<>();
-//        try (Connection connection = jdbcConnect.createConnection()) {
-//            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users " +
-//                    "WHERE id BETWEEN ? AND ?");
-//            preparedStatement.setLong(1, with);
-//            preparedStatement.setLong(2, by);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                users.add(new User(
-//                        resultSet.getLong(1),
-//                        resultSet.getString(2),
-//                        resultSet.getString(3)
-//                ));
-//            }
-//            return users;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("invalid request", e);
-//        }
-//    }
 
     @Override
     public Optional<User> findById(Long id) {

@@ -1,7 +1,6 @@
 package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.repository.ProductRepo;
 import com.example.trainingProject.service.OrderService;
@@ -26,7 +25,6 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findAll() {
         return orderRepo.findAll();
     }
-
 
 
     @Override

@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         Optional<Order> orderOptional = orderRepo.findById(orderId);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-            products = productRepo.findProductByOrderId(order.getId());
+            products = productRepo.findProductByOrderId(order);
         }
         return products;
     }
@@ -59,11 +59,11 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> optionalProduct = productRepo.findById(productId);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-            if (order.getStatus().toString().equals("NEW")&&optionalProduct.isPresent()) {
+            if (order.getStatus().toString().equals("NEW") && optionalProduct.isPresent()) {
                 productRepo.deleteProductFromOrder(orderId, productId);
                 Product product = optionalProduct.get();
                 BigDecimal totalCost = order.getTotalCost().subtract(product.getPrice());
-                orderRepo.minusTotalCost(order.getId(),totalCost);
+                orderRepo.minusTotalCost(order.getId(), totalCost);
             }
         }
     }

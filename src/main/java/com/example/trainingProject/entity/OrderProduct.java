@@ -4,37 +4,40 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class OrderProduct {
-   private Long order_id;
-   private Long product_id;
-   private String titleProduct;
-   private BigDecimal sum;
-   private Integer count;
+    private Long orderId;
+    private Long productId;
+    private String titleProduct;
+    private BigDecimal sum;
+    private Integer count;
+    private OrderStatus orderStatus;
 
-    public OrderProduct(Long order_id, Long product_id, String titleProduct, BigDecimal sum, Integer count) {
-        this.order_id = order_id;
-        this.product_id = product_id;
+    public OrderProduct(Long orderId, Long productId, String titleProduct,
+                        BigDecimal sum, Integer count, OrderStatus orderStatus) {
+        this.orderId = orderId;
+        this.productId = productId;
         this.titleProduct = titleProduct;
         this.sum = sum;
         this.count = count;
+        this.orderStatus = orderStatus;
     }
 
     public OrderProduct() {
     }
 
-    public Long getOrder_id() {
-        return order_id;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setOrder_id(Long order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getTitleProduct() {
@@ -61,27 +64,36 @@ public class OrderProduct {
         this.count = count;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderProduct that = (OrderProduct) o;
-        return Objects.equals(order_id, that.order_id) && Objects.equals(product_id, that.product_id) && Objects.equals(titleProduct, that.titleProduct) && Objects.equals(sum, that.sum) && Objects.equals(count, that.count);
+        return Objects.equals(orderId, that.orderId) && Objects.equals(productId, that.productId) && Objects.equals(titleProduct, that.titleProduct) && Objects.equals(sum, that.sum) && Objects.equals(count, that.count) && orderStatus == that.orderStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(order_id, product_id, titleProduct, sum, count);
+        return Objects.hash(orderId, productId, titleProduct, sum, count, orderStatus);
     }
 
     @Override
     public String toString() {
         return "OrderProduct{" +
-                "order_id=" + order_id +
-                ", product_id=" + product_id +
+                "orderId=" + orderId +
+                ", productId=" + productId +
                 ", titleProduct='" + titleProduct + '\'' +
                 ", sum=" + sum +
                 ", count=" + count +
+                ", orderStatus=" + orderStatus +
                 '}';
     }
 }
