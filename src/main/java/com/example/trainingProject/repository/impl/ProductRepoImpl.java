@@ -98,7 +98,8 @@ public class ProductRepoImpl implements ProductRepo {
     public void deleteProductFromOrder(Long orderId, Long productId) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("DELETE FROM order_products WHERE order_id = ? AND product_id = ?");
+                    .prepareStatement("DELETE FROM order_products WHERE id = ANY (SELECT id FROM order_products " +
+                            "WHERE order_id = ? AND product_id = ? LIMIT 1)");
             preparedStatement.setLong(1, orderId);
             preparedStatement.setLong(2, productId);
             preparedStatement.executeUpdate();

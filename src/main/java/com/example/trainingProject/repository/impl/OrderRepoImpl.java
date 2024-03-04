@@ -27,7 +27,7 @@ public class OrderRepoImpl implements OrderRepo {
         List<Order> orders = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY id");
             while (resultSet.next()) {
                 orders.add(new Order(resultSet.getLong(1), resultSet.getLong(2),
                         resultSet.getBigDecimal(3),
