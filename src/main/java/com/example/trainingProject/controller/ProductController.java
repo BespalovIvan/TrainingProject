@@ -25,23 +25,23 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/products-order")
-    public String findProductByOrder(@RequestParam("id") Long orderId, Model model) {
+    @GetMapping("/products-order/{id}")
+    public String findProductByOrder(@PathVariable("id") Long orderId, Model model) {
         List<OrderProduct> products = productService.findProductByOrderId(orderId);
         model.addAttribute("productsOrder", products);
         return "productsOrder";
     }
 
-    @PostMapping("add-product")
+    @PostMapping("/add-product")
     public String addProductToOrder(@RequestParam("id") Long productId) {
         productService.addProductToOrder(idUser, productId);
         return "redirect:/products";
     }
 
-    @DeleteMapping("delete-product")
-    public String deleteProductFromOrder(@RequestParam("order_id") Long orderId,
-                                         @RequestParam("product_id") Long productId) {
+    @DeleteMapping("/delete-product/{order_id}/{product_id}")
+    public String deleteProductFromOrder(@PathVariable("order_id") Long orderId,
+                                         @PathVariable("product_id") Long productId) {
         productService.deleteProductFromOrder(orderId, productId);
-        return "redirect:/products-order?id=" + orderId;
+        return "redirect:/products-order/{order_id}";
     }
 }
