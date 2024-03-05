@@ -6,15 +6,17 @@ import java.util.Objects;
 public class OrderProduct {
     private Long orderId;
     private Long productId;
+    private BigDecimal price;
     private String titleProduct;
     private BigDecimal sum;
     private Integer count;
     private OrderStatus orderStatus;
 
-    public OrderProduct(Long orderId, Long productId, String titleProduct,
-                        BigDecimal sum, Integer count, OrderStatus orderStatus) {
+    public OrderProduct(Long orderId, Long productId, BigDecimal price,
+                        String titleProduct, BigDecimal sum, Integer count, OrderStatus orderStatus) {
         this.orderId = orderId;
         this.productId = productId;
+        this.price = price;
         this.titleProduct = titleProduct;
         this.sum = sum;
         this.count = count;
@@ -38,6 +40,14 @@ public class OrderProduct {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getTitleProduct() {
@@ -77,12 +87,12 @@ public class OrderProduct {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderProduct that = (OrderProduct) o;
-        return Objects.equals(orderId, that.orderId) && Objects.equals(productId, that.productId) && Objects.equals(titleProduct, that.titleProduct) && Objects.equals(sum, that.sum) && Objects.equals(count, that.count) && orderStatus == that.orderStatus;
+        return Objects.equals(orderId, that.orderId) && Objects.equals(productId, that.productId) && Objects.equals(price, that.price) && Objects.equals(titleProduct, that.titleProduct) && Objects.equals(sum, that.sum) && Objects.equals(count, that.count) && orderStatus == that.orderStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, productId, titleProduct, sum, count, orderStatus);
+        return Objects.hash(orderId, productId, price, titleProduct, sum, count, orderStatus);
     }
 
     @Override
@@ -90,6 +100,8 @@ public class OrderProduct {
         return "OrderProduct{" +
                 "orderId=" + orderId +
                 ", productId=" + productId +
+                ", price=" + price +
+                ", totalSum=" +
                 ", titleProduct='" + titleProduct + '\'' +
                 ", sum=" + sum +
                 ", count=" + count +

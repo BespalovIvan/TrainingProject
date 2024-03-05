@@ -1,0 +1,18 @@
+table, td, th {
+  border-collapse: collapse;
+  border: 3px solid #245488;
+  margin-bottom: 1em;
+}
+
+td, th {
+  padding: 10px 20px;
+  text-align: center;
+}
+.container {
+  display: flex;
+}
+
+#block1, #block2 {
+  flex: 0;
+  margin: 2px;
+}

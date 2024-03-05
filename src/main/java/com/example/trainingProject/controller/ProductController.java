@@ -28,6 +28,7 @@ public class ProductController {
     @GetMapping("/products-order/{id}")
     public String findProductByOrder(@PathVariable("id") Long orderId, Model model) {
         List<OrderProduct> products = productService.findProductByOrderId(orderId);
+        model.addAttribute("totalSum", productService.getTotalSum(orderId));
         model.addAttribute("productsOrder", products);
         return "productsOrder";
     }

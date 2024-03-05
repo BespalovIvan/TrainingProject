@@ -67,4 +67,14 @@ public class ProductServiceImpl implements ProductService {
             }
         }
     }
+
+    @Override
+    public BigDecimal getTotalSum(Long orderId) {
+        Optional<Order> orderOptional = orderRepo.findById(orderId);
+        if (orderOptional.isPresent()) {
+            return orderOptional.get().getTotalCost();
+        } else {
+            return new BigDecimal(0);
+        }
+    }
 }

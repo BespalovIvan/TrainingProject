@@ -2,7 +2,6 @@ package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.entity.Order;
 import com.example.trainingProject.repository.OrderRepo;
-import com.example.trainingProject.repository.ProductRepo;
 import com.example.trainingProject.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +13,10 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo orderRepo;
 
-    private final ProductRepo productRepo;
 
-    public OrderServiceImpl(OrderRepo orderRepo, ProductRepo productRepo) {
+    public OrderServiceImpl(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
-        this.productRepo = productRepo;
+
     }
 
     @Override
@@ -31,5 +29,10 @@ public class OrderServiceImpl implements OrderService {
     public void changeStatusOrder(Long orderId) {
         Optional<Order> orderOptional = orderRepo.findById(orderId);
         orderOptional.ifPresent(order -> orderRepo.changeStatusOrder(order.getId()));
+    }
+
+    @Override
+    public Optional<Order> findById(Long id) {
+        return orderRepo.findById(id);
     }
 }

@@ -3,15 +3,15 @@
 <head>
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link th:href="@{/styles/css/main.css}" rel="stylesheet"/>
-    <td>
-        <form method="GET" th:action="@{/orders}">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <div class="container">
+        <div id="block1"><form method="GET" th:action="@{/orders}">
             <button type="submit" class="link-button">Orders</button>
-        </form>
-        <form method="GET" th:action="@{/products}">
+        </form></div>
+        <div id="block2"><form method="GET" th:action="@{/products}">
             <button type="submit" class="link-button">Products</button>
-        </form>
-    </td>
+        </form></div>
+    </div>
 </head>
 <body>
 <h2>Products Order</h2>
@@ -20,6 +20,7 @@
     <tr>
         <th>TITLE</th>
         <th>COUNT</th>
+        <th>PRICE</th>
         <th>SUM</th>
 
     </tr>
@@ -28,15 +29,20 @@
     <tr th:each="orderProduct:${productsOrder}">
         <td th:text="${orderProduct.titleProduct}">Title</td>
         <td th:text="${orderProduct.count}">Count</td>
+        <td th:text="${orderProduct.price}">Price</td>
         <td th:text="${orderProduct.sum}">Sum</td>
         <td>
-            <form th:if = '${orderProduct.orderStatus.toString() == "NEW"}' th:object="${orderProduct}"
-                  th:action="@{/delete-product/{order_id}/{product_id}(order_id=${orderProduct.orderId},(product_id=${orderProduct.productId}))}" th:method="delete">
+            <form th:if='${orderProduct.orderStatus.toString() == "NEW"}' th:object="${orderProduct}"
+                  th:action="@{/delete-product/{order_id}/{product_id}(order_id=${orderProduct.orderId},(product_id=${orderProduct.productId}))}"
+                  th:method="delete">
                 <button type="submit" name="submit" value="value" class="link-button">Delete</button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
+<div class="name"> <b>TOTAL SUM :</b>
+    <td th:text="${totalSum}"></td>
+</div>
 </body>
 </html>

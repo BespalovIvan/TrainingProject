@@ -44,14 +44,14 @@ public class ProductRepoImpl implements ProductRepo {
         List<OrderProduct> orderProducts = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT op.order_id, op.product_id," +
-                    "p.title,SUM(p.price),COUNT(*) FROM order_products as op JOIN products as p ON (op.product_id = p.id) " +
-                    "WHERE op.order_id = ? GROUP BY op.product_id,p.title,op.order_id");
+                    "p.title,p.price,SUM(p.price),COUNT(*) FROM order_products as op JOIN products as p ON (op.product_id = p.id) " +
+                    "WHERE op.order_id = ? GROUP BY p.price, op.product_id,p.title,op.order_id");
             preparedStatement.setLong(1, order.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 orderProducts.add(new OrderProduct(resultSet.getLong(1), resultSet.getLong(2),
-                        resultSet.getString(3), resultSet.getBigDecimal(4),
-                        resultSet.getInt(5), order.getStatus()));
+                        resultSet.getBigDecimal(4), resultSet.getString(3),
+                        resultSet.getBigDecimal(5), resultSet.getInt(6), order.getStatus()));
             }
             return orderProducts;
         } catch (SQLException e) {
