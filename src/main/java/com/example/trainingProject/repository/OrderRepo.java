@@ -3,6 +3,7 @@ package com.example.trainingProject.repository;
 import com.example.trainingProject.entity.Order;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +16,6 @@ public interface OrderRepo {
      void changeStatusOrder(Long orderId);
      void plusTotalCost(Long orderId, BigDecimal sum);
      void minusTotalCost(Long orderId, BigDecimal sum);
-     void deleteOrder(Integer id);
+     void changeUpdateDate (LocalDateTime date,Long orderId);
+     void deleteOrder(Long orderId);
 }

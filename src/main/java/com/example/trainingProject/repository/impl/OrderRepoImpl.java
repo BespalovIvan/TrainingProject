@@ -159,6 +159,29 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public void deleteOrder(Integer id) {
+    public void changeUpdateDate(LocalDateTime date, Long orderId) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("UPDATE orders SET  update_date_time =  ? WHERE id = ?");
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(date));
+            preparedStatement.setLong(2, orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("DELETE FROM orders WHERE id = ?");
+            preparedStatement.setLong(1, orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
     }
 }

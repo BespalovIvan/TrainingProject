@@ -2,6 +2,7 @@ package com.example.trainingProject.controller;
 
 import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.entity.Product;
+import com.example.trainingProject.service.OrderService;
 import com.example.trainingProject.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +13,12 @@ import java.util.List;
 @Controller
 public class ProductController {
     private final ProductService productService;
+    private final OrderService orderService;
     private final Long idUser = 11L;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OrderService orderService) {
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/products")
@@ -28,7 +31,7 @@ public class ProductController {
     @GetMapping("/products-order/{id}")
     public String findProductByOrder(@PathVariable("id") Long orderId, Model model) {
         List<OrderProduct> products = productService.findProductByOrderId(orderId);
-        model.addAttribute("totalSum", productService.getTotalSum(orderId));
+        model.addAttribute("order", orderService.findById(orderId));
         model.addAttribute("productsOrder", products);
         return "productsOrder";
     }
@@ -39,10 +42,15 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @DeleteMapping("/delete-product/{order_id}/{product_id}")
+    @PostMapping("/delete-product/{order_id}/{product_id}")
     public String deleteProductFromOrder(@PathVariable("order_id") Long orderId,
                                          @PathVariable("product_id") Long productId) {
         productService.deleteProductFromOrder(orderId, productId);
         return "redirect:/products-order/{order_id}";
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public String handleException() {
+        return "redirect:/orders";
     }
 }

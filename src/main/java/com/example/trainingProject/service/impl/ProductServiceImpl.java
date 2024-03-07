@@ -9,6 +9,8 @@ import com.example.trainingProject.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void addProductToOrder(Long userId, Long productId) {
         BigDecimal totalCost = BigDecimal.valueOf(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         Order order = orderRepo.findNewOrderByUserId(userId).orElseGet(() -> orderRepo.createOrder(userId));
         Optional<Product> optionalProduct = productRepo.findById(productId);
         if (optionalProduct.isPresent()) {
@@ -50,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
             totalCost = totalCost.add(product.getPrice());
             orderRepo.plusTotalCost(order.getId(), totalCost);
         }
+        orderRepo.changeUpdateDate(LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter), order.getId());
         productRepo.addProductToOrder(productId, order.getId());
     }
 
@@ -57,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProductFromOrder(Long orderId, Long productId) {
         Optional<Order> orderOptional = orderRepo.findById(orderId);
         Optional<Product> optionalProduct = productRepo.findById(productId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             if (order.getStatus().toString().equals("NEW") && optionalProduct.isPresent()) {
@@ -64,17 +69,13 @@ public class ProductServiceImpl implements ProductService {
                 Product product = optionalProduct.get();
                 BigDecimal totalCost = order.getTotalCost().subtract(product.getPrice());
                 orderRepo.minusTotalCost(order.getId(), totalCost);
+                orderRepo.changeUpdateDate(LocalDateTime.parse(LocalDateTime.now()
+                        .format(formatter), formatter), order.getId());
+                List<OrderProduct> products = productRepo.findProductByOrderId(order);
+                if (products.isEmpty()) {
+                    orderRepo.deleteOrder(orderId);
+                }
             }
-        }
-    }
-
-    @Override
-    public BigDecimal getTotalSum(Long orderId) {
-        Optional<Order> orderOptional = orderRepo.findById(orderId);
-        if (orderOptional.isPresent()) {
-            return orderOptional.get().getTotalCost();
-        } else {
-            return new BigDecimal(0);
         }
     }
 }

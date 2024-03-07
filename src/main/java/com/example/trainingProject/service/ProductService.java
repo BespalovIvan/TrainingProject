@@ -1,6 +1,7 @@
 package com.example.trainingProject.service;
 
 import com.example.trainingProject.entity.OrderProduct;
+import com.example.trainingProject.entity.OrderStatus;
 import com.example.trainingProject.entity.Product;
 
 import java.math.BigDecimal;
@@ -15,5 +16,4 @@ public interface ProductService {
 
     void addProductToOrder(Long userId, Long productId);
     void deleteProductFromOrder(Long orderId,Long productId);
-    BigDecimal getTotalSum (Long orderId);
 }

@@ -32,7 +32,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> findById(Long id) {
-        return orderRepo.findById(id);
+    public Order findNewOrderByUserId(Long userId) {
+        Optional<Order> orderOptional = orderRepo.findNewOrderByUserId(userId);
+        if (orderOptional.isPresent()) {
+            return orderOptional.get();
+        } else {
+            throw new RuntimeException("New order not found");
+        }
+    }
+
+    @Override
+    public Order findById(Long id) {
+        Optional<Order> orderOptional = orderRepo.findById(id);
+        if (orderOptional.isPresent()) {
+            return orderOptional.get();
+        } else {
+            throw new RuntimeException("Order not found");
+        }
+
+
     }
 }

@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Shop</title>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/static/css/main.css">
     <div class="container">
         <div id="block1">
-            <form method="GET" th:action="@{/new-orders}">
-                <button type="submit" class="link-button">Order</button>
+            <form method="GET" th:action="@{/orders}">
+                <button type="submit" class="link-button">History of orders</button>
             </form>
         </div>
         <div id="block2">
@@ -18,16 +18,10 @@
     </div>
 </head>
 <body>
-
-<h1>User</h1>
-<table>
-    <tr>
-        <th>NAME</th>
-        <th>EMAIL</th>
-    </tr>
-    <td th:text="${user.name}">Name</td>
-    <td th:text="${user.email}">Email</td>
-    </tr>
-</table>
+<div class="container">
+    <div id="block5">
+        <strong>NO ACTIVE ORDERS FOUND</strong>
+    </div>
+</div>
 </body>
 </html>

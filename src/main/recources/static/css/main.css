@@ -1,4 +1,4 @@
-table, td, th {
+table, td, th, strong {
   border-collapse: collapse;
   border: 3px solid #245488;
   margin-bottom: 1em;
@@ -13,6 +13,14 @@ td, th {
 }
 
 #block1, #block2 {
-  flex: 0;
-  margin: 2px;
+   margin-right: 4px;
 }
+#block3, #block4 {
+   margin-right: 260px;
+   margin-top: 20px;
+}
+#block5 {
+    margin-right: 260px;
+       margin-top: 20px;
+}
+

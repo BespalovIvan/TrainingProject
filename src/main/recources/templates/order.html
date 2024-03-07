@@ -2,22 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/styles/css/main.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/main.css">
+    <div class="container">
+        <div id="block1">
+            <form method="GET" th:action="@{/products}">
+                <button type="submit" class="link-button">Products</button>
+            </form>
+        </div>
+        <div id="block2">
+            <form method="GET" th:action="@{/user}">
+                <button type="submit" class="link-button">Profile</button>
+            </form>
+        </div>
+    </div>
     <title>Shop</title>
 </head>
 <body>
-<h3>Order</h3>
+<h3>My order</h3>
 <table>
     <tr>
         <th>ID</th>
-        <th>User</th>
-        <th>Products</th>
-        <th>Date</th>
+        <th>Total cost</th>
+        <th>Create Date</th>
+        <th>Update Date</th>
+        <th>Status</th>
     </tr>
-        <td th:text="${order.id}">Id</td>
-        <td th:text="${order.user}">Name</td>
-        <td th:text="${order.products}">Name</td>
-        <td th:text="${order.date}">Date</td>
+    <td th:text="${order.id}">Id</td>
+    <td th:text="${order.totalCost}">Total</td>
+    <td th:text="${order.orderCreationDate}">Create date</td>
+    <td th:text="${order.orderUpdateDate}">Update date</td>
+    <td th:text="${order.status}">Status</td>
+    <td><a th:href="@{/products-order/{id}(id=${order.id})}">Order products</a></td>
     </tr>
 </table>
 </body>

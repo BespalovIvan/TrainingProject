@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    //    Optional<Order> findById(Long id);
+    Order findNewOrderByUserId(Long userId);
     List<Order> findAll();
 
     void changeStatusOrder(Long userId);
 
-    Optional<Order> findById(Long id);
+    Order findById(Long id);
 
 }
