@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface OrderService {
 
     Order findNewOrderByUserId(Long userId);
-    List<Order> findAll();
+    List<Order> findAll(Long userid);
 
     void changeStatusOrder(Long userId);
 

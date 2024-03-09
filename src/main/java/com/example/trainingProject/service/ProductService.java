@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ProductService {
 
-    //    Optional<Product> findById(Long id);
     List<Product> findAll();
 
     List<OrderProduct> findProductByOrderId(Long orderId);

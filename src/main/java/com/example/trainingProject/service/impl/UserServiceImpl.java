@@ -3,8 +3,10 @@ package com.example.trainingProject.service.impl;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.UserRepo;
 import com.example.trainingProject.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -21,16 +23,16 @@ public class UserServiceImpl implements UserService {
         return userRepo.findById(id);
     }
 
-    public Long createUser(String name, String email) {
-        return userRepo.createUser(name, email);
-    }
-
-
-    public void deleteUserById(Long id) {
-        userRepo.deleteUserById(id);
-    }
-
-    public Long updateUserById(Long id, String name, String email) {
-        return userRepo.updateUserById(id, name, email);
+    public boolean createUser(User user) {
+        Optional<User> optionalUser = userRepo.findByName(user.getName());
+        if (optionalUser.isPresent()) {
+            return false;
+        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setCreateDate(LocalDateTime.now());
+        user.setRole("USER");
+        userRepo.createUser(user.getName(), user.getEmail(), user.getPassword(), user.getCreateDate(), user.getRole());
+        return true;
     }
 }

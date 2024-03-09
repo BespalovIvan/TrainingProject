@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface OrderRepo {
 
-     List<Order> findAll();
+     List<Order> findAll(Long user_id);
      Optional<Order> findNewOrderByUserId(Long id);
      Order createOrder(Long userId);
      Optional<Order> findById(Long id);

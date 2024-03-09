@@ -4,6 +4,12 @@
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/static/css/main.css">
+    <div>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+
     <div class="container">
         <div id="block1">
             <form method="GET" th:action="@{/new-orders}">

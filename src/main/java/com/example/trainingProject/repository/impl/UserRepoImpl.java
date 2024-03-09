@@ -5,10 +5,8 @@ import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.UserRepo;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -47,54 +45,46 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public Long createUser(String name, String email) {
+    public Optional<User> findByName(String name) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT * FROM users WHERE username = ?");
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                User result = new User(resultSet.getLong(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
+                        resultSet.getString(6));
+                return Optional.of(result);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
+    public Long createUser(String name, String email, String password, LocalDateTime createDate, String role) {
         try (Connection connection = jdbcConnect.createConnection()) {
             Long userId = -1L;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO users (name,email ) VALUES (?, ?)", new String[]{"id"});
+                    .prepareStatement("INSERT INTO users (username,email,create_date,password,role) " +
+                            "VALUES (?,?,?,?,?)", new String[]{"id"});
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(createDate));
+            preparedStatement.setString(4, password);
+            preparedStatement.setString(5, role);
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 userId = generatedKeys.getLong("id");
             }
             return userId;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("invalid request", e);
-        }
-    }
-
-    @Override
-    public Long updateUserById(Long id, String name, String email) {
-        try (Connection connection = jdbcConnect.createConnection()) {
-            Long userId = -1L;
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("UPDATE users SET name = ?, email = ? WHERE id = ?", new String[]{"id"});
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, email);
-            preparedStatement.setLong(3, id);
-            preparedStatement.executeUpdate();
-            ResultSet generationKeys = preparedStatement.getGeneratedKeys();
-            if (generationKeys.next()) {
-                userId = generationKeys.getLong("id");
-            }
-            System.out.println(userId);
-            return userId;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("invalid request", e);
-        }
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-        try (Connection connection = jdbcConnect.createConnection()) {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("DELETE FROM users WHERE id = ?");
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("invalid request", e);

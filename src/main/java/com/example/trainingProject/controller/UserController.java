@@ -1,13 +1,13 @@
 package com.example.trainingProject.controller;
 
 
+import com.example.trainingProject.config.MyUserDetails;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
 
@@ -15,24 +15,15 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final Long idUser = 11L;
 
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    //    @GetMapping("/users")
-//    public String findBetween(@RequestParam(value = "with", defaultValue = "1") Long with,
-//                              @RequestParam(value = "by", defaultValue = "100000") Long by, Model model) {
-//        List<User> userList = userService.findBetween(with, by);
-//        model.addAttribute("users", userList);
-//        return "user-list";
-//    }
-//
     @GetMapping("/user")
-    public String findById(Model model) {
-        Optional<User> optionalUser = userService.findById(idUser);
+    public String findById(@AuthenticationPrincipal MyUserDetails user, Model model) {
+        Optional<User> optionalUser = userService.findById(user.getUserId());
         if (optionalUser.isPresent()) {
             model.addAttribute("user", optionalUser.get());
         } else {
@@ -40,38 +31,4 @@ public class UserController {
         }
         return "user";
     }
-
-    @GetMapping("/user-create")
-    public String createUserForm(User user) {
-        return "create-user";
-    }
-
-    @PostMapping("/user-create")
-    public String createUser(User user) {
-        userService.createUser(user.getName(), user.getEmail());
-        return "redirect:/users";
-    }
-
-    @GetMapping("/user-delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUserById(id);
-        return "redirect:/users";
-    }
-
-//    @GetMapping("/user-update/{id}")
-//    public String updateUserForm(@PathVariable("id") Long id, Model model) {
-//        Optional<User> optionalUser = userService.findById(id);
-//        if (optionalUser.isPresent()) {
-//            User user = optionalUser.get();
-//            model.addAttribute("user", user);
-//        }
-//        return "user-update";
-//    }
-
-    @PostMapping("/user-update")
-    public String updateUser(User user) {
-        userService.updateUserById(user.getId(), user.getName(), user.getEmail());
-        return "redirect:/users";
-    }
-
 }

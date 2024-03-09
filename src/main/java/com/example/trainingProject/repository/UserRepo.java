@@ -2,14 +2,14 @@ package com.example.trainingProject.repository;
 
 import com.example.trainingProject.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface UserRepo {
     Optional<User> findById(Long id);
 
-    Long createUser(String name, String email);
+    Optional<User> findByName(String name);
 
-    Long updateUserById(Long id, String name, String email);
+    Long createUser(String name, String email, String password, LocalDateTime createDate, String role);
 
-    void deleteUserById(Long id);
 }

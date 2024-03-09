@@ -20,8 +20,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAll() {
-        return orderRepo.findAll();
+    public List<Order> findAll(Long userId) {
+        return orderRepo.findAll(userId);
     }
 
 
@@ -49,7 +49,6 @@ public class OrderServiceImpl implements OrderService {
         } else {
             throw new RuntimeException("Order not found");
         }
-
 
     }
 }

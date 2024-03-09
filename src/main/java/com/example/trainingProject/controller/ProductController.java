@@ -1,9 +1,12 @@
 package com.example.trainingProject.controller;
 
+import com.example.trainingProject.config.MyUserDetails;
 import com.example.trainingProject.entity.OrderProduct;
 import com.example.trainingProject.entity.Product;
+import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.OrderService;
 import com.example.trainingProject.service.ProductService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +17,6 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final OrderService orderService;
-    private final Long idUser = 11L;
 
     public ProductController(ProductService productService, OrderService orderService) {
         this.productService = productService;
@@ -37,8 +39,8 @@ public class ProductController {
     }
 
     @PostMapping("/add-product")
-    public String addProductToOrder(@RequestParam("id") Long productId) {
-        productService.addProductToOrder(idUser, productId);
+    public String addProductToOrder(@AuthenticationPrincipal MyUserDetails user, @RequestParam("id") Long productId) {
+        productService.addProductToOrder(user.getUserId(), productId);
         return "redirect:/products";
     }
 

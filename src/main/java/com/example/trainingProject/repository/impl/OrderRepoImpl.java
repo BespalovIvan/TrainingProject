@@ -23,11 +23,13 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<Order> findAll(Long userId) {
         List<Order> orders = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY id");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders" +
+                    " WHERE user_id = ? ORDER BY id");
+            preparedStatement.setLong(1,userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 orders.add(new Order(resultSet.getLong(1), resultSet.getLong(2),
                         resultSet.getBigDecimal(3),
