@@ -24,9 +24,12 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public String findAll(Model model) {
+    public String findAll(@AuthenticationPrincipal MyUserDetails user, Model model) {
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
+        if (user == null) {
+            return "productListForView";
+        }
         return "products";
     }
 

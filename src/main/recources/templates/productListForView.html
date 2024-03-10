@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Shop</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+<div>
+    <form th:action="@{/login}" method="get">
+        <input type="submit" value="Sign in"/>
+    </form>
+</div>
+<h2>Products</h2>
+<table>
+    <thead>
+    <tr>
+        <th>TITLE</th>
+        <th>PRICE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product:${products}">
+        <td th:text="${product.title}">Name</td>
+        <td th:text="${product.price}">Price</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -4,19 +4,20 @@
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/static/css/main.css">
-    <div class="container">
-        <div id="block1">
-            <form method="GET" th:action="@{/products}">
-                <button type="submit" class="link-button">Products</button>
-            </form>
-        </div>
-        <div id="block2">
-            <form method="GET" th:action="@{/user}">
-                <button type="submit" class="link-button">Profile</button>
-            </form>
-        </div>
-    </div>
 </head>
+
+<div class="container">
+    <div id="block1">
+        <form method="GET" th:action="@{/products}">
+            <button type="submit" class="link-button">Products</button>
+        </form>
+    </div>
+    <div id="block2">
+        <form method="GET" th:action="@{/user}">
+            <button type="submit" class="link-button">Profile</button>
+        </form>
+    </div>
+</div>
 <body>
 <h1>History of orders</h1>
 <table>

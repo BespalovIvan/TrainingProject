@@ -4,8 +4,7 @@
     <title>Shop</title>
 </head>
 <body>
-<div class="name">Hello user!
-</div>
-<p>Click <a th:href="@{/products}">here</a> to create order.</p>
+<p th:text="'Hello, ' + ${username} + '!' ">
+<p>Click <a th:href="@{/products}">here</a> to see product list.</p>
 </body>
 </html>

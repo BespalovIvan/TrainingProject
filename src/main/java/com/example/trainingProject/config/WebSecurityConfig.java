@@ -1,5 +1,7 @@
 package com.example.trainingProject.config;
 
+import com.example.trainingProject.repository.UserRepo;
+import com.example.trainingProject.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -7,27 +9,23 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-    private final DataSource dataSource;
+    private final UserRepo userRepo;
 
-    public WebSecurityConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-
+    public WebSecurityConfig(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new MyUserDetailsService();
+        return new UserServiceImpl(userRepo);
     }
 
     @Bean
@@ -42,7 +40,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/registration").permitAll()
+                        .requestMatchers("/", "/registration","/products").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
