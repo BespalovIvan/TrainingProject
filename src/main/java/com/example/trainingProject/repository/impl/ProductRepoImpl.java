@@ -2,7 +2,7 @@ package com.example.trainingProject.repository.impl;
 
 import com.example.trainingProject.config.JDBCConnect;
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.OrderProduct;
+import com.example.trainingProject.dto.OrderProductDto;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.repository.ProductRepo;
 import org.springframework.stereotype.Repository;
@@ -40,8 +40,8 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public List<OrderProduct> findProductByOrderId(Order order) {
-        List<OrderProduct> orderProducts = new ArrayList<>();
+    public List<OrderProductDto> findProductByOrderId(Order order) {
+        List<OrderProductDto> orderProductDtos = new ArrayList<>();
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT op.order_id, op.product_id," +
                     "p.title,p.price,SUM(p.price),COUNT(*) FROM order_products as op JOIN products as p ON (op.product_id = p.id) " +
@@ -49,11 +49,11 @@ public class ProductRepoImpl implements ProductRepo {
             preparedStatement.setLong(1, order.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                orderProducts.add(new OrderProduct(resultSet.getLong(1), resultSet.getLong(2),
+                orderProductDtos.add(new OrderProductDto(resultSet.getLong(1), resultSet.getLong(2),
                         resultSet.getBigDecimal(4), resultSet.getString(3),
                         resultSet.getBigDecimal(5), resultSet.getInt(6), order.getStatus()));
             }
-            return orderProducts;
+            return orderProductDtos;
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }

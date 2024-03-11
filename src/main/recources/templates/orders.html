@@ -4,6 +4,11 @@
     <title>Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/static/css/main.css">
+    <div>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
 </head>
 
 <div class="container">
@@ -23,7 +28,6 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>Total cost</th>
         <th>Create Date</th>
         <th>Update Date</th>
@@ -32,12 +36,11 @@
     </thead>
     <tbody>
     <tr th:each="order:${orders}">
-        <td th:text="${order.id}">Id</td>
         <td th:text="${order.totalCost}">Total</td>
         <td th:text="${order.orderCreationDate}">Create date</td>
         <td th:text="${order.orderUpdateDate}">Update date</td>
         <td th:text="${order.status}">Status</td>
-        <td><a th:href="@{/products-order/{id}(id=${order.id})}">Order products</a></td>
+        <td><a th:href="@{/products-order/{id}(id=${order.orderId})}">Order products</a></td>
     </tr>
     </tbody>
 </table>

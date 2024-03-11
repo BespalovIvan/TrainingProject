@@ -1,12 +1,13 @@
 package com.example.trainingProject.service;
 
+import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.User;
 
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> findById(Long id);
+    Optional<UserDto> findById(Long id);
 
-    boolean createUser(User user);
+    boolean createUser(UserDto userDto);
 
 }

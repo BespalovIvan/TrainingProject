@@ -1,9 +1,9 @@
 package com.example.trainingProject.controller;
 
 import com.example.trainingProject.config.MyUserDetails;
-import com.example.trainingProject.entity.OrderProduct;
+import com.example.trainingProject.dto.OrderProductDto;
+import com.example.trainingProject.dto.ProductDto;
 import com.example.trainingProject.entity.Product;
-import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.OrderService;
 import com.example.trainingProject.service.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +25,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public String findAll(@AuthenticationPrincipal MyUserDetails user, Model model) {
-        List<Product> products = productService.findAll();
+        List<ProductDto> products = productService.findAll();
         model.addAttribute("products", products);
         if (user == null) {
             return "productListForView";
@@ -35,9 +35,9 @@ public class ProductController {
 
     @GetMapping("/products-order/{id}")
     public String findProductByOrder(@PathVariable("id") Long orderId, Model model) {
-        List<OrderProduct> products = productService.findProductByOrderId(orderId);
+        List<OrderProductDto> productsDto = productService.findProductByOrderId(orderId);
         model.addAttribute("order", orderService.findById(orderId));
-        model.addAttribute("productsOrder", products);
+        model.addAttribute("productsOrder", productsDto);
         return "productsOrder";
     }
 

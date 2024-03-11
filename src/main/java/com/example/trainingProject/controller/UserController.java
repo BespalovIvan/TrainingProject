@@ -2,6 +2,7 @@ package com.example.trainingProject.controller;
 
 
 import com.example.trainingProject.config.MyUserDetails;
+import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,9 +24,9 @@ public class UserController {
 
     @GetMapping("/user")
     public String findById(@AuthenticationPrincipal MyUserDetails user, Model model) {
-        Optional<User> optionalUser = userService.findById(user.getUserId());
-        if (optionalUser.isPresent()) {
-            model.addAttribute("user", optionalUser.get());
+        Optional<UserDto> optionalUserDto = userService.findById(user.getUserId());
+        if (optionalUserDto.isPresent()) {
+            model.addAttribute("user", optionalUserDto.get());
         } else {
             model.addAttribute("user", new User());
         }

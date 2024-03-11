@@ -28,7 +28,7 @@ public class OrderRepoImpl implements OrderRepo {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders" +
                     " WHERE user_id = ? ORDER BY id");
-            preparedStatement.setLong(1,userId);
+            preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 orders.add(new Order(resultSet.getLong(1), resultSet.getLong(2),
@@ -71,7 +71,7 @@ public class OrderRepoImpl implements OrderRepo {
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("SELECT * FROM orders WHERE user_id = ? AND status = ?");
             preparedStatement.setLong(1, id);
-            preparedStatement.setString(2, "NEW");
+            preparedStatement.setString(2, OrderStatus.NEW.name());
             ResultSet resultSet = preparedStatement.executeQuery();
             Optional<Order> orderOptional = Optional.empty();
             while (resultSet.next()) {
@@ -123,7 +123,7 @@ public class OrderRepoImpl implements OrderRepo {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE orders SET " +
                     "status = ? WHERE id = ?");
-            preparedStatement.setString(1, "READY");
+            preparedStatement.setString(1, OrderStatus.READY.name());
             preparedStatement.setLong(2, orderId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

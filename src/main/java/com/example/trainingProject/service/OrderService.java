@@ -1,17 +1,17 @@
 package com.example.trainingProject.service;
 
+import com.example.trainingProject.dto.OrderDto;
 import com.example.trainingProject.entity.Order;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OrderService {
 
-    Order findNewOrderByUserId(Long userId);
-    List<Order> findAll(Long userid);
+    OrderDto findNewOrderByUserId(Long userId);
+    List<OrderDto> findAllByUserId(Long userid);
 
     void changeStatusOrder(Long userId);
 
-    Order findById(Long id);
+    OrderDto findById(Long id);
 
 }

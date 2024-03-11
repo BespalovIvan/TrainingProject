@@ -1,6 +1,8 @@
 package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.config.MyUserDetails;
+import com.example.trainingProject.dto.UserDto;
+import com.example.trainingProject.entity.Role;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.UserRepo;
 import com.example.trainingProject.service.UserService;
@@ -23,20 +25,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.userRepo = userRepoSpring;
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepo.findById(id);
+    public Optional<UserDto> findById(Long id) {
+        Optional<User> user = userRepo.findById(id);
+        return user.map(value -> new UserDto(value.getName(), value.getEmail()));
     }
 
-    public boolean createUser(User user) {
-        Optional<User> optionalUser = userRepo.findByName(user.getName());
+    public boolean createUser(UserDto userDto) {
+        Optional<User> optionalUser = userRepo.findByName(userDto.getName());
         if (optionalUser.isPresent()) {
             return false;
         }
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setCreateDate(LocalDateTime.now());
-        user.setRole("USER");
-        userRepo.createUser(user.getName(), user.getEmail(), user.getPassword(), user.getCreateDate(), user.getRole());
+        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        userDto.setCreateDate(LocalDateTime.now());
+        userDto.setRole(Role.USER.toString());
+        userRepo.createUser(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getCreateDate(), userDto.getRole());
         return true;
     }
 

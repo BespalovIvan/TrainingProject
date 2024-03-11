@@ -1,7 +1,8 @@
 package com.example.trainingProject.service.impl;
 
+import com.example.trainingProject.dto.ProductDto;
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.OrderProduct;
+import com.example.trainingProject.dto.OrderProductDto;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.repository.ProductRepo;
@@ -27,13 +28,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        return productRepo.findAll();
+    public List<ProductDto> findAll() {
+        List<Product> productList = productRepo.findAll();
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for(Product product : productList){
+            productDtoList.add(new ProductDto(product.getId(),product.getTitle(),product.getPrice()));
+        }
+        return productDtoList;
     }
 
     @Override
-    public List<OrderProduct> findProductByOrderId(Long orderId) {
-        List<OrderProduct> products = new ArrayList<>();
+    public List<OrderProductDto> findProductByOrderId(Long orderId) {
+        List<OrderProductDto> products = new ArrayList<>();
         Optional<Order> orderOptional = orderRepo.findById(orderId);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
@@ -71,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
                 orderRepo.minusTotalCost(order.getId(), totalCost);
                 orderRepo.changeUpdateDate(LocalDateTime.parse(LocalDateTime.now()
                         .format(formatter), formatter), order.getId());
-                List<OrderProduct> products = productRepo.findProductByOrderId(order);
+                List<OrderProductDto> products = productRepo.findProductByOrderId(order);
                 if (products.isEmpty()) {
                     orderRepo.deleteOrder(orderId);
                 }

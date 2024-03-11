@@ -1,8 +1,8 @@
 package com.example.trainingProject.controller;
 
 import com.example.trainingProject.config.MyUserDetails;
+import com.example.trainingProject.dto.OrderDto;
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.OrderService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,8 +21,8 @@ public class OrderController {
 
     @GetMapping("/orders")
     public String findAll(@AuthenticationPrincipal MyUserDetails user, Model model) {
-        List<Order> orderList = orderService.findAll(user.getUserId());
-        model.addAttribute("orders", orderList);
+        List<OrderDto> orderDtoList = orderService.findAllByUserId(user.getUserId());
+        model.addAttribute("orders", orderDtoList);
         return "orders";
     }
 

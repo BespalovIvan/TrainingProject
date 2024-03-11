@@ -1,5 +1,6 @@
 package com.example.trainingProject.controller;
 
+import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,8 @@ public class RegistrationController {
         return "registration";
     }
     @PostMapping("/registration")
-    public String addNewUser(User user ){
-        userService.createUser(user);
+    public String addNewUser(UserDto userDto ){
+        userService.createUser(userDto);
         return "redirect:/login";
     }
 }
