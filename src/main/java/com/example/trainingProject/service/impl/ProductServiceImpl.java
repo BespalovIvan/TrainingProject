@@ -38,6 +38,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public byte[] findImageById(Long productId) {
+        return productRepo.findImageById(productId);
+    }
+
+    @Override
     public List<OrderProductDto> findProductByOrderId(Long orderId) {
         List<OrderProductDto> products = new ArrayList<>();
         Optional<Order> orderOptional = orderRepo.findById(orderId);

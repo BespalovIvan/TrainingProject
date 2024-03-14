@@ -6,11 +6,13 @@ import com.example.trainingProject.dto.ProductDto;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.service.OrderService;
 import com.example.trainingProject.service.ProductService;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -52,6 +54,10 @@ public class ProductController {
                                          @PathVariable("product_id") Long productId) {
         productService.deleteProductFromOrder(orderId, productId);
         return "redirect:/products-order/{order_id}";
+    }
+    @GetMapping(value = "/file/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImage(@PathVariable Long productId) throws IOException {
+        return productService.findImageById(productId);
     }
 
     @ExceptionHandler(RuntimeException.class)
