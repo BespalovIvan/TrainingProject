@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface ProductRepo {
     List<Product> findAll();
-    byte[] findImageById(Long productId);
     List<OrderProductDto> findProductByOrderId(Order order);
     Optional<Product> findById(Long productId);
     Product addProductToOrder(Long productId, Long orderId);

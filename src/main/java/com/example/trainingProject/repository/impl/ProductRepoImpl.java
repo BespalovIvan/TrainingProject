@@ -9,6 +9,7 @@ import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
 import org.springframework.stereotype.Repository;
 
+import java.awt.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,27 +40,6 @@ public class ProductRepoImpl implements ProductRepo {
         } catch (SQLException e) {
             throw new RuntimeException("invalid request");
         }
-    }
-
-    @Override
-    public byte[] findImageById(Long productId) {
-        byte[] result = null;
-        try (Connection connection = jdbcConnect.createConnection()) {
-            LargeObjectManager lob = ((org.postgresql.PGConnection) connection).getLargeObjectAPI();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT image FROM products WHERE id = ?");
-            preparedStatement.setLong(1, productId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                int oid = resultSet.getInt(1);
-                LargeObject obj = lob.open(oid, LargeObjectManager.READ);
-                byte[] buf = new byte[obj.size()];
-                obj.read(buf, 0, obj.size());
-                result = buf;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("invalid request");
-        }
-        return result;
     }
 
     @Override

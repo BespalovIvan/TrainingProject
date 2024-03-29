@@ -38,9 +38,6 @@
         <td th:text="${product.title}">Name</td>
         <td th:text="${product.price}">Price</td>
         <td>
-            <img th:src="@{/file/${product.id}}" alt=""/>
-        </td>
-        <td>
             <form method="POST" th:action="@{add-product(id=${product.id})}">
                 <button type="submit" name="submit" value="value" class="link-button">Add to order</button>
             </form>

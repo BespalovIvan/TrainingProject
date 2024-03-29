@@ -31,8 +31,8 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findAll() {
         List<Product> productList = productRepo.findAll();
         List<ProductDto> productDtoList = new ArrayList<>();
-        for(Product product : productList){
-            productDtoList.add(new ProductDto(product.getId(),product.getTitle(),product.getPrice()));
+        for (Product product : productList) {
+            productDtoList.add(new ProductDto(product.getId(), product.getTitle(), product.getPrice()));
         }
         return productDtoList;
     }

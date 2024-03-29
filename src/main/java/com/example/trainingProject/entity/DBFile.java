@@ -1,23 +1,22 @@
 package com.example.trainingProject.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class DBFile {
+
     @Id
     private Long id;
-    private String title;
-    private BigDecimal price;
-    private LocalDateTime createDate;
+    private String filename;
+    @Lob
+    private byte[] data;
 
 }
