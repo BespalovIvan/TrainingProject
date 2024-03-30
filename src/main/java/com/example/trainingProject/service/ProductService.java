@@ -9,10 +9,10 @@ import java.util.List;
 public interface ProductService {
 
     List<ProductDto> findAll();
-    byte[] findImageById(Long productId);
 
     List<OrderProductDto> findProductByOrderId(Long orderId);
 
     void addProductToOrder(Long userId, Long productId);
-    void deleteProductFromOrder(Long orderId,Long productId);
+
+    void deleteProductFromOrder(Long orderId, Long productId);
 }

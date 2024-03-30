@@ -3,7 +3,7 @@ package com.example.trainingProject.controller;
 import com.example.trainingProject.config.MyUserDetails;
 import com.example.trainingProject.dto.OrderProductDto;
 import com.example.trainingProject.dto.ProductDto;
-import com.example.trainingProject.entity.Product;
+import com.example.trainingProject.service.DBFileService;
 import com.example.trainingProject.service.OrderService;
 import com.example.trainingProject.service.ProductService;
 import org.springframework.http.*;
@@ -13,17 +13,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ProductController {
     private final ProductService productService;
     private final OrderService orderService;
+    private final DBFileService dbFileService;
 
-    public ProductController(ProductService productService, OrderService orderService) {
+    public ProductController(ProductService productService, OrderService orderService, DBFileService dbFileService) {
         this.productService = productService;
         this.orderService = orderService;
+        this.dbFileService = dbFileService;
     }
 
     @GetMapping("/products")
@@ -59,7 +60,7 @@ public class ProductController {
     @GetMapping(value = "/file", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<Object> getImage(@RequestParam(name = "id",required = false) Long productId) throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        byte[] result = productService.findImageById(productId);
+        byte[] result = dbFileService.getFileById(productId);
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
         return new ResponseEntity<Object>(result, headers, HttpStatus.OK);
     }

@@ -2,7 +2,9 @@ package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.repository.DBFileRepo;
 import com.example.trainingProject.service.DBFileService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DBFileServiceImpl implements DBFileService {
     private final DBFileRepo dbFileRepo;
 
@@ -12,6 +14,7 @@ public class DBFileServiceImpl implements DBFileService {
 
     @Override
     public byte[] getFileById(Long fileId) {
-        return dbFileRepo.getFileById(fileId);
+
+        return dbFileRepo.getFileByProductId(fileId);
     }
 }

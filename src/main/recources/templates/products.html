@@ -31,12 +31,16 @@
     <tr>
         <th>TITLE</th>
         <th>PRICE</th>
+        <th>IMAGE</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="product:${products}">
         <td th:text="${product.title}">Name</td>
         <td th:text="${product.price}">Price</td>
+        <td>
+            <img th:src="${product.image}" width="200" height="100" >
+        </td>
         <td>
             <form method="POST" th:action="@{add-product(id=${product.id})}">
                 <button type="submit" name="submit" value="value" class="link-button">Add to order</button>
