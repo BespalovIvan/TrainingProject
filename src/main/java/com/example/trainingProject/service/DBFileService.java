@@ -1,5 +1,7 @@
 package com.example.trainingProject.service;
 
+import com.example.trainingProject.entity.DBFile;
+
 public interface DBFileService {
-    byte[] getFileById(Long fileId);
+    DBFile getFileByProductId(Long fileId);
 }

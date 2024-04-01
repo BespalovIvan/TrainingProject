@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -57,12 +56,13 @@ public class ProductController {
         productService.deleteProductFromOrder(orderId, productId);
         return "redirect:/products-order/{order_id}";
     }
+
     @GetMapping(value = "/file", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<Object> getImage(@RequestParam(name = "id",required = false) Long productId) throws IOException {
+    public ResponseEntity<Object> getImage(@RequestParam(name = "id", required = false) Long productId) {
         HttpHeaders headers = new HttpHeaders();
-        byte[] result = dbFileService.getFileById(productId);
+        byte[] result = dbFileService.getFileByProductId(productId).getData();
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-        return new ResponseEntity<Object>(result, headers, HttpStatus.OK);
+        return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
     @ExceptionHandler(RuntimeException.class)

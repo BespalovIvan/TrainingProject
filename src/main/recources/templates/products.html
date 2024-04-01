@@ -39,7 +39,7 @@
         <td th:text="${product.title}">Name</td>
         <td th:text="${product.price}">Price</td>
         <td>
-            <img th:src="${product.image}" width="200" height="100" >
+            <img th:src="@{file(id=${product.id})}" width="200" height="200" >
         </td>
         <td>
             <form method="POST" th:action="@{add-product(id=${product.id})}">

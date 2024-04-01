@@ -5,11 +5,8 @@ import com.example.trainingProject.dto.OrderProductDto;
 import com.example.trainingProject.entity.Order;
 import com.example.trainingProject.entity.Product;
 import com.example.trainingProject.repository.ProductRepo;
-import org.postgresql.largeobject.LargeObject;
-import org.postgresql.largeobject.LargeObjectManager;
 import org.springframework.stereotype.Repository;
 
-import java.awt.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

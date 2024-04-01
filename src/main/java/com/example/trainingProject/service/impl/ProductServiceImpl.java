@@ -35,8 +35,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = productRepo.findAll();
         List<ProductDto> productDtoList = new ArrayList<>();
         for (Product product : productList) {
-            byte[] image = dbFileRepo.getFileByProductId(product.getId());
-            productDtoList.add(new ProductDto(product.getId(), product.getTitle(), product.getPrice(),image));
+            productDtoList.add(new ProductDto(product.getId(), product.getTitle(), product.getPrice()));
         }
         return productDtoList;
     }
