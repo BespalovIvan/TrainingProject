@@ -18,12 +18,16 @@ public class RegistrationController {
     }
 
     @GetMapping("/registration")
-    public String registration(){
+    public String registration() {
         return "registration";
     }
+
     @PostMapping("/registration")
-    public String addNewUser(UserDto userDto ){
-        userService.createUser(userDto);
+    public String addNewUser(UserDto userDto,Model model) {
+        if(!userService.createUser(userDto)){
+            model.addAttribute("message", "User exists!");
+            return "registration";
+        }
         return "redirect:/login";
     }
 }

@@ -1,6 +1,7 @@
 package com.example.trainingProject.config;
 
 import com.example.trainingProject.repository.UserRepo;
+import com.example.trainingProject.service.MailSender;
 import com.example.trainingProject.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +19,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
     private final UserRepo userRepo;
+    private final MailSender mailSender;
 
-    public WebSecurityConfig(UserRepo userRepo) {
+    public WebSecurityConfig(UserRepo userRepo, MailSender mailSender) {
         this.userRepo = userRepo;
+        this.mailSender = mailSender;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserServiceImpl(userRepo);
+        return new UserServiceImpl(userRepo, mailSender);
     }
 
     @Bean

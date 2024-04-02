@@ -15,6 +15,7 @@ public class UserDto {
     private LocalDateTime createDate;
     private String password;
     private String role;
+    private String activateCode;
 
     public UserDto(String name, String email) {
         this.name = name;

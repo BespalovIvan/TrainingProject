@@ -6,9 +6,9 @@
 <body>
 Registration
 <form action="#" th:action="@{/registration}" th:object="${userDto}" method="post">
-    <div><label> User Name : <input type="text" name="name"/> </label></div>
-    <div><label> Email : <input type="text" name="email"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><label> User Name : <input type="text" name="name" placeholder="User name"/> </label></div>
+    <div><label> Password: <input type="password" name="password" placeholder="Password"/> </label></div>
+    <div><label> Email : <input type="text" name="email" placeholder="some@some.com"/> </label></div>
     <div><input type="submit" value="Sign in"/></div>
 </form>
 </body>
