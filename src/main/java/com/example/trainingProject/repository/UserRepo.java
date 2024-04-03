@@ -10,6 +10,7 @@ public interface UserRepo {
 
     Optional<User> findByName(String name);
 
-    Long createUser(String name, String email, String password, LocalDateTime createDate, String role);
+    Long createUser(String name, String email, String password, LocalDateTime createDate, String role,String activateCode);
 
+    Optional<User> findUserByActivatedCode(String code);
 }

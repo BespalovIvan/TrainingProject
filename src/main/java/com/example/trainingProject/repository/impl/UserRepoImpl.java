@@ -68,23 +68,48 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public Long createUser(String name, String email, String password, LocalDateTime createDate, String role) {
+    public Long createUser(String name, String email, String password, LocalDateTime createDate, String role,
+                           String activateCode) {
         try (Connection connection = jdbcConnect.createConnection()) {
             Long userId = -1L;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO users (username,email,create_date,password,role) " +
-                            "VALUES (?,?,?,?,?)", new String[]{"id"});
+                    .prepareStatement("INSERT INTO users (username,email,create_date,password,role,activate_code) " +
+                            "VALUES (?,?,?,?,?,?)", new String[]{"id"});
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
             preparedStatement.setTimestamp(3, Timestamp.valueOf(createDate));
             preparedStatement.setString(4, password);
             preparedStatement.setString(5, role);
+            preparedStatement.setString(6,activateCode);
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 userId = generatedKeys.getLong("id");
             }
             return userId;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
+    public Optional<User> findUserByActivatedCode(String code) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT * FROM users WHERE activate_code = ?");
+            preparedStatement.setString(1, code);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                User result = new User(resultSet.getLong(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
+                        resultSet.getString(6),resultSet.getString(7));
+                return Optional.of(result);
+            } else {
+                return Optional.empty();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("invalid request", e);

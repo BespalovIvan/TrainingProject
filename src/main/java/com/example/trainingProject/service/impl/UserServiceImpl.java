@@ -5,7 +5,7 @@ import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.Role;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.UserRepo;
-import com.example.trainingProject.service.MailSender;
+import com.example.trainingProject.service.SmtpMailSender;
 import com.example.trainingProject.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,11 +23,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     private final UserRepo userRepo;
-    private final MailSender mailSender;
+    private final SmtpMailSender smtpMailSender;
 
-    public UserServiceImpl(UserRepo userRepoSpring, MailSender mailSender) {
+    public UserServiceImpl(UserRepo userRepoSpring, SmtpMailSender smtpMailSender) {
         this.userRepo = userRepoSpring;
-        this.mailSender = mailSender;
+        this.smtpMailSender = smtpMailSender;
     }
 
     public Optional<UserDto> findById(Long id) {
@@ -47,12 +47,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDto.setActivateCode(UUID.randomUUID().toString());
 
         userRepo.createUser(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getCreateDate(),
-                userDto.getRole());
+                userDto.getRole(), userDto.getActivateCode());
         if (!StringUtils.isEmpty(userDto.getEmail())) {
             String message = String.format("Hello, %s! \n" +
                             "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
-                    ,userDto.getName(), userDto.getActivateCode());
-            mailSender.send(userDto.getEmail(), "Activate code", message);
+                    , userDto.getName(), userDto.getActivateCode());
+            smtpMailSender.send(userDto.getEmail(), "Activate code", message);
         }
 
         return true;
@@ -62,5 +62,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<User> user = userRepo.findByName(username);
         return user.map(MyUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException(username + "There is not such user in Repo"));
+    }
+
+    @Override
+    public boolean activateUser(String code) {
+        Optional<User> optionalUser = userRepo.findUserByActivatedCode(code);
+        if (optionalUser.isEmpty()) {
+            return false;
+        }
+        User user = optionalUser.get();
+        user.setActivateCode(null);
+        userRepo.createUser(user.getName(), user.getEmail(), user.getPassword(), user.getCreateDate(), user.getRole(),
+                user.getActivateCode());
+        return true;
     }
 }

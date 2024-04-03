@@ -1,5 +1,5 @@
 package com.example.trainingProject.service;
 
-public interface MailSender {
+public interface SmtpMailSender {
     void send(String emailTo, String subject,String message);
 }

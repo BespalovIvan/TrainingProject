@@ -1,7 +1,7 @@
 package com.example.trainingProject.config;
 
 import com.example.trainingProject.repository.UserRepo;
-import com.example.trainingProject.service.MailSender;
+import com.example.trainingProject.service.SmtpMailSender;
 import com.example.trainingProject.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,16 +19,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
     private final UserRepo userRepo;
-    private final MailSender mailSender;
+    private final SmtpMailSender smtpMailSender;
 
-    public WebSecurityConfig(UserRepo userRepo, MailSender mailSender) {
+    public WebSecurityConfig(UserRepo userRepo, SmtpMailSender smtpMailSender) {
         this.userRepo = userRepo;
-        this.mailSender = mailSender;
+        this.smtpMailSender = smtpMailSender;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserServiceImpl(userRepo, mailSender);
+        return new UserServiceImpl(userRepo, smtpMailSender);
     }
 
     @Bean
@@ -43,7 +43,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/registration","/products").permitAll()
+                        .requestMatchers("/", "/registration","/products","/activate/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

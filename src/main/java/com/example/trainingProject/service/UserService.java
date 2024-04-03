@@ -10,4 +10,5 @@ public interface UserService {
 
     boolean createUser(UserDto userDto);
 
+    boolean activateUser(String code);
 }
