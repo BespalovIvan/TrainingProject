@@ -1,5 +1,6 @@
 package com.example.trainingProject.repository;
 
+import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.User;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ public interface UserRepo {
 
     Optional<User> findByName(String name);
 
-    Long createUser(String name, String email, String password, LocalDateTime createDate, String role,String activateCode);
+    Long createUser(UserDto userDto);
+    Long updateUser(UserDto userDto);
 
     Optional<User> findUserByActivatedCode(String code);
 }

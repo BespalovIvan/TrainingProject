@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class UserDto {
+    private Long id;
     private String name;
     private String email;
     private LocalDateTime createDate;
@@ -20,5 +21,14 @@ public class UserDto {
     public UserDto(String name, String email) {
         this.name = name;
         this.email = email;
+    }
+
+    public UserDto(String name, String email, LocalDateTime createDate, String password, String role, String activateCode) {
+        this.name = name;
+        this.email = email;
+        this.createDate = createDate;
+        this.password = password;
+        this.role = role;
+        this.activateCode = activateCode;
     }
 }

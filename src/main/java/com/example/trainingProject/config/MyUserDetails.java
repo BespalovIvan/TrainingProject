@@ -23,6 +23,7 @@ public class MyUserDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+
     public Long getUserId() {
         return user.getId();
     }
@@ -44,6 +45,9 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
+        if(user.getActivateCode()!= null){
+            return false;
+        }
         return true;
     }
 

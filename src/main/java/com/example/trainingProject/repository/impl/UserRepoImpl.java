@@ -1,6 +1,7 @@
 package com.example.trainingProject.repository.impl;
 
 import com.example.trainingProject.config.JDBCConnect;
+import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.User;
 import com.example.trainingProject.repository.UserRepo;
 import org.springframework.stereotype.Repository;
@@ -56,7 +57,7 @@ public class UserRepoImpl implements UserRepo {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
-                        resultSet.getString(6));
+                        resultSet.getString(6),resultSet.getString(7));
                 return Optional.of(result);
             } else {
                 return Optional.empty();
@@ -68,19 +69,44 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public Long createUser(String name, String email, String password, LocalDateTime createDate, String role,
-                           String activateCode) {
+    public Long createUser(UserDto userDto) {
         try (Connection connection = jdbcConnect.createConnection()) {
             Long userId = -1L;
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO users (username,email,create_date,password,role,activate_code) " +
                             "VALUES (?,?,?,?,?,?)", new String[]{"id"});
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, email);
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(createDate));
-            preparedStatement.setString(4, password);
-            preparedStatement.setString(5, role);
-            preparedStatement.setString(6,activateCode);
+            preparedStatement.setString(1, userDto.getName());
+            preparedStatement.setString(2, userDto.getEmail());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(userDto.getCreateDate()));
+            preparedStatement.setString(4, userDto.getPassword());
+            preparedStatement.setString(5, userDto.getRole());
+            preparedStatement.setString(6, userDto.getActivateCode());
+            preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                userId = generatedKeys.getLong("id");
+            }
+            return userId;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
+    public Long updateUser(UserDto userDto) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            Long userId = -1L;
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("UPDATE users SET username = ?,email = ?, create_date = ?, password = ?,role = ?,activate_code = ? WHERE id = ?;"
+                            , new String[]{"id"});
+            preparedStatement.setString(1, userDto.getName());
+            preparedStatement.setString(2, userDto.getEmail());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(userDto.getCreateDate()));
+            preparedStatement.setString(4, userDto.getPassword());
+            preparedStatement.setString(5, userDto.getRole());
+            preparedStatement.setString(6, userDto.getActivateCode());
+            preparedStatement.setLong(7,userDto.getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -105,7 +131,7 @@ public class UserRepoImpl implements UserRepo {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
-                        resultSet.getString(6),resultSet.getString(7));
+                        resultSet.getString(6), resultSet.getString(7));
                 return Optional.of(result);
             } else {
                 return Optional.empty();

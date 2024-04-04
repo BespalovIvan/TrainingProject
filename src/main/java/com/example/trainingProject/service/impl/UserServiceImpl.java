@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDto.setRole(Role.USER.toString());
         userDto.setActivateCode(UUID.randomUUID().toString());
 
-        userRepo.createUser(userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getCreateDate(),
-                userDto.getRole(), userDto.getActivateCode());
+        userRepo.createUser(userDto);
         if (!StringUtils.isEmpty(userDto.getEmail())) {
             String message = String.format("Hello, %s! \n" +
                             "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
@@ -72,8 +71,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         User user = optionalUser.get();
         user.setActivateCode(null);
-        userRepo.createUser(user.getName(), user.getEmail(), user.getPassword(), user.getCreateDate(), user.getRole(),
-                user.getActivateCode());
+        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getCreateDate(), user.getPassword(),
+                user.getRole(), user.getActivateCode());
+        userRepo.updateUser(userDto);
         return true;
     }
 }
