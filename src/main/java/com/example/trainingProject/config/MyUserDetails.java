@@ -1,5 +1,6 @@
 package com.example.trainingProject.config;
 
+import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
     private final User user;
-
     public MyUserDetails(User user) {
         this.user = user;
     }
@@ -45,9 +45,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        if(user.getActivateCode()!= null){
-            return false;
-        }
+        boolean b = user.isActivate();
         return true;
     }
 

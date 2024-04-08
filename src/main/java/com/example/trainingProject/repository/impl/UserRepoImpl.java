@@ -7,7 +7,6 @@ import com.example.trainingProject.repository.UserRepo;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -57,7 +56,7 @@ public class UserRepoImpl implements UserRepo {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
-                        resultSet.getString(6),resultSet.getString(7));
+                        resultSet.getString(6));
                 return Optional.of(result);
             } else {
                 return Optional.empty();
@@ -73,14 +72,13 @@ public class UserRepoImpl implements UserRepo {
         try (Connection connection = jdbcConnect.createConnection()) {
             Long userId = -1L;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO users (username,email,create_date,password,role,activate_code) " +
-                            "VALUES (?,?,?,?,?,?)", new String[]{"id"});
+                    .prepareStatement("INSERT INTO users (username,email,create_date,password,role) " +
+                            "VALUES (?,?,?,?,?)", new String[]{"id"});
             preparedStatement.setString(1, userDto.getName());
             preparedStatement.setString(2, userDto.getEmail());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(userDto.getCreateDate()));
             preparedStatement.setString(4, userDto.getPassword());
             preparedStatement.setString(5, userDto.getRole());
-            preparedStatement.setString(6, userDto.getActivateCode());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -98,15 +96,15 @@ public class UserRepoImpl implements UserRepo {
         try (Connection connection = jdbcConnect.createConnection()) {
             Long userId = -1L;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("UPDATE users SET username = ?,email = ?, create_date = ?, password = ?,role = ?,activate_code = ? WHERE id = ?;"
+                    .prepareStatement("UPDATE users SET username = ?,email = ?, create_date = ?, password = ?,role = ?,activate_status = ? WHERE id = ?;"
                             , new String[]{"id"});
             preparedStatement.setString(1, userDto.getName());
             preparedStatement.setString(2, userDto.getEmail());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(userDto.getCreateDate()));
             preparedStatement.setString(4, userDto.getPassword());
             preparedStatement.setString(5, userDto.getRole());
-            preparedStatement.setString(6, userDto.getActivateCode());
-            preparedStatement.setLong(7,userDto.getId());
+            preparedStatement.setBoolean(6, userDto.isConfirmed());
+            preparedStatement.setLong(7, userDto.getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -120,10 +118,39 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public Optional<User> findUserByActivatedCode(String code) {
+    public void generateActivateCode(Long userId, String activate_code) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("SELECT * FROM users WHERE activate_code = ?");
+                    .prepareStatement("INSERT INTO activate (user_id,activate_code,confirmed) VALUES (?,?,?)");
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setString(2, activate_code);
+            preparedStatement.setBoolean(3, false);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
+    public void activateUser(UserDto userDto) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("UPDATE activate SET confirmed = ? WHERE user_id = ?");
+            preparedStatement.setBoolean(1, userDto.isConfirmed());
+            preparedStatement.setLong(2, userDto.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("invalid request", e);
+        }
+    }
+
+    @Override
+    public Optional<User> findNotActivatedUserByCode(String code) {
+        try (Connection connection = jdbcConnect.createConnection()) {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT u.id,u.username,u.email,u.create_date,u.password,u.role FROM users as u JOIN activate as a ON (u.id = a.user_id) WHERE activate_code = ? AND confirmed = false");
             preparedStatement.setString(1, code);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -131,7 +158,7 @@ public class UserRepoImpl implements UserRepo {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
-                        resultSet.getString(6), resultSet.getString(7));
+                        resultSet.getString(6));
                 return Optional.of(result);
             } else {
                 return Optional.empty();
@@ -140,5 +167,7 @@ public class UserRepoImpl implements UserRepo {
             e.printStackTrace();
             throw new RuntimeException("invalid request", e);
         }
+
+
     }
 }

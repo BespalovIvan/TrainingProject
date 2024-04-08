@@ -20,7 +20,7 @@ public class User {
     private LocalDateTime createDate;
     private String password;
     private String role;
-    private String activateCode;
+    private boolean isActivate;
 
     public User(Long id, String name, String email, LocalDateTime createDate) {
         this.id = id;

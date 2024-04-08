@@ -44,16 +44,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         userDto.setCreateDate(LocalDateTime.now());
         userDto.setRole(Role.USER.toString());
+        Long userId = userRepo.createUser(userDto);
         userDto.setActivateCode(UUID.randomUUID().toString());
-
-        userRepo.createUser(userDto);
+        userRepo.generateActivateCode(userId, userDto.getActivateCode());
         if (!StringUtils.isEmpty(userDto.getEmail())) {
             String message = String.format("Hello, %s! \n" +
                             "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
                     , userDto.getName(), userDto.getActivateCode());
             smtpMailSender.send(userDto.getEmail(), "Activate code", message);
         }
-
         return true;
     }
 
@@ -65,15 +64,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean activateUser(String code) {
-        Optional<User> optionalUser = userRepo.findUserByActivatedCode(code);
+        Optional<User> optionalUser = userRepo.findNotActivatedUserByCode(code);
         if (optionalUser.isEmpty()) {
             return false;
         }
         User user = optionalUser.get();
-        user.setActivateCode(null);
-        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getCreateDate(), user.getPassword(),
-                user.getRole(), user.getActivateCode());
+        user.setActivate(true);
+        UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getCreateDate(),
+                user.getPassword(), user.getRole(), user.isActivate());
         userRepo.updateUser(userDto);
+        userRepo.activateUser(userDto);
         return true;
     }
 }

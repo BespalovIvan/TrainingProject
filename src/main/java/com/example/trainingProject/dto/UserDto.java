@@ -17,18 +17,20 @@ public class UserDto {
     private String password;
     private String role;
     private String activateCode;
+    private boolean confirmed;
 
     public UserDto(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    public UserDto(String name, String email, LocalDateTime createDate, String password, String role, String activateCode) {
+    public UserDto(Long id, String name, String email, LocalDateTime createDate, String password, String role, boolean confirmed) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.createDate = createDate;
         this.password = password;
         this.role = role;
-        this.activateCode = activateCode;
+        this.confirmed = confirmed;
     }
 }
