@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setActivate(true);
         UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getCreateDate(),
                 user.getPassword(), user.getRole(), user.isActivate());
-        userRepo.updateUser(userDto);
         userRepo.activateUser(userDto);
+        userRepo.updateUser(userDto);
         return true;
     }
 }

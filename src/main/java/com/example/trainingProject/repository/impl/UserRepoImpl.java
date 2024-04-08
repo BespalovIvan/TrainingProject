@@ -56,7 +56,7 @@ public class UserRepoImpl implements UserRepo {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getString(5),
-                        resultSet.getString(6));
+                        resultSet.getString(6), resultSet.getBoolean(7));
                 return Optional.of(result);
             } else {
                 return Optional.empty();

@@ -45,8 +45,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        boolean b = user.isActivate();
-        return true;
+        return user.isActivate();
     }
 
     @Override
