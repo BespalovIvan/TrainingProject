@@ -121,7 +121,7 @@ public class UserRepoImpl implements UserRepo {
     public void generateActivateCode(Long userId, String activate_code) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO activate (user_id,activate_code,confirmed) VALUES (?,?,?)");
+                    .prepareStatement("INSERT INTO account_activation_info (user_id,activate_code,confirmed) VALUES (?,?,?)");
             preparedStatement.setLong(1, userId);
             preparedStatement.setString(2, activate_code);
             preparedStatement.setBoolean(3, false);
@@ -136,7 +136,7 @@ public class UserRepoImpl implements UserRepo {
     public void activateUser(UserDto userDto) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("UPDATE activate SET confirmed = ? WHERE user_id = ?");
+                    .prepareStatement("UPDATE account_activation_info SET confirmed = ? WHERE user_id = ?");
             preparedStatement.setBoolean(1, userDto.isConfirmed());
             preparedStatement.setLong(2, userDto.getId());
             preparedStatement.executeUpdate();
@@ -150,7 +150,7 @@ public class UserRepoImpl implements UserRepo {
     public Optional<User> findNotActivatedUserByCode(String code) {
         try (Connection connection = jdbcConnect.createConnection()) {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("SELECT u.id,u.username,u.email,u.create_date,u.password,u.role FROM users as u JOIN activate as a ON (u.id = a.user_id) WHERE activate_code = ? AND confirmed = false");
+                    .prepareStatement("SELECT u.id,u.username,u.email,u.create_date,u.password,u.role FROM users as u JOIN account_activation_info as a ON (u.id = a.user_id) WHERE activate_code = ? AND confirmed = false");
             preparedStatement.setString(1, code);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

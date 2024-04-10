@@ -40,20 +40,34 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (optionalUser.isPresent()) {
             return false;
         }
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(userDto.getPassword());
         userDto.setCreateDate(LocalDateTime.now());
         userDto.setRole(Role.USER.toString());
         Long userId = userRepo.createUser(userDto);
+        userDto.setId(userId);
         userDto.setActivateCode(UUID.randomUUID().toString());
         userRepo.generateActivateCode(userId, userDto.getActivateCode());
+        return true;
+    }
+
+    @Override
+    public String createMessageForActivate(UserDto userDto) {
         if (!StringUtils.isEmpty(userDto.getEmail())) {
-            String message = String.format("Hello, %s! \n" +
+            return String.format("Hello, %s! \n" +
                             "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
                     , userDto.getName(), userDto.getActivateCode());
-            smtpMailSender.send(userDto.getEmail(), "Activate code", message);
+
         }
-        return true;
+        throw new RuntimeException("Email not found!");
+    }
+
+    @Override
+    public void encodingPassword(UserDto userDto) {
+        Optional<User> optionalUser = userRepo.findByName(userDto.getName());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        optionalUser.ifPresent(user -> userDto.setId(user.getId()));
+        userRepo.updateUser(userDto);
     }
 
     public UserDetails loadUserByUsername(String username) {

@@ -11,4 +11,7 @@ public interface UserService {
     boolean createUser(UserDto userDto);
 
     boolean activateUser(String code);
+
+    void encodingPassword(UserDto userDto);
+    String createMessageForActivate(UserDto userDto);
 }
