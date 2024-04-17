@@ -4,6 +4,9 @@ import com.example.trainingProject.config.MyUserDetails;
 import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.entity.Role;
 import com.example.trainingProject.entity.User;
+import com.example.trainingProject.exceptions.EmailException;
+import com.example.trainingProject.exceptions.PasswordException;
+import com.example.trainingProject.exceptions.UserNameException;
 import com.example.trainingProject.repository.UserRepo;
 import com.example.trainingProject.service.SmtpMailSender;
 import com.example.trainingProject.service.UserService;
@@ -23,11 +26,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     private final UserRepo userRepo;
-    private final SmtpMailSender smtpMailSender;
 
-    public UserServiceImpl(UserRepo userRepoSpring, SmtpMailSender smtpMailSender) {
+
+    public UserServiceImpl(UserRepo userRepoSpring) {
         this.userRepo = userRepoSpring;
-        this.smtpMailSender = smtpMailSender;
+
     }
 
     public Optional<UserDto> findById(Long id) {
@@ -36,11 +39,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public boolean createUser(UserDto userDto) {
-        Optional<User> optionalUser = userRepo.findByName(userDto.getName());
-        if (optionalUser.isPresent()) {
-            return false;
+        if (!userDto.getName().isEmpty()) {
+            Optional<User> optionalUser = userRepo.findByName(userDto.getName());
+            if (optionalUser.isPresent()) {
+                return false;
+            }
+        } else {
+            throw new UserNameException("username cannot be empty");
         }
-        userDto.setPassword(userDto.getPassword());
+
+        if (!userDto.getPassword().isEmpty()) {
+            userDto.setPassword(userDto.getPassword());
+        } else {
+            throw new PasswordException("password cannot be empty");
+        }
+        if(userDto.getEmail().isEmpty()){
+            throw new EmailException("email cannot be empty");
+        }
         userDto.setCreateDate(LocalDateTime.now());
         userDto.setRole(Role.USER.toString());
         Long userId = userRepo.createUser(userDto);
@@ -51,18 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public String createMessageForActivate(UserDto userDto) {
-        if (!StringUtils.isEmpty(userDto.getEmail())) {
-            return String.format("Hello, %s! \n" +
-                            "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
-                    , userDto.getName(), userDto.getActivateCode());
-
-        }
-        throw new RuntimeException("Email not found!");
-    }
-
-    @Override
-    public void encodingPassword(UserDto userDto) {
+    public void encodingUserPassword(UserDto userDto) {
         Optional<User> optionalUser = userRepo.findByName(userDto.getName());
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));

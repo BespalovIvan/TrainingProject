@@ -1,7 +1,6 @@
 package com.example.trainingProject.service;
 
 import com.example.trainingProject.dto.UserDto;
-import com.example.trainingProject.entity.User;
 
 import java.util.Optional;
 
@@ -12,6 +11,6 @@ public interface UserService {
 
     boolean activateUser(String code);
 
-    void encodingPassword(UserDto userDto);
-    String createMessageForActivate(UserDto userDto);
+    void encodingUserPassword(UserDto userDto);
+
 }

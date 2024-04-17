@@ -1,10 +1,13 @@
 package com.example.trainingProject.service.impl;
 
+import com.example.trainingProject.dto.UserDto;
+import com.example.trainingProject.exceptions.EmailException;
 import com.example.trainingProject.service.SmtpMailSender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 @Service
 public class SmtpMailSenderImpl implements SmtpMailSender {
@@ -27,7 +30,16 @@ public class SmtpMailSenderImpl implements SmtpMailSender {
         mailMessage.setText(message);
 
         mailSender.send(mailMessage);
+    }
 
+    @Override
+    public String createMessageForActivate(UserDto userDto) {
+        if (!StringUtils.isEmpty(userDto.getEmail())) {
+            return String.format("Hello, %s! \n" +
+                            "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
+                    , userDto.getName(), userDto.getActivateCode());
 
+        }
+        throw new EmailException("Email not found!");
     }
 }

@@ -5,6 +5,9 @@
 </head>
 <body>
 Registration
+<div th:if="${message != null}">
+    <b th:text="${message}"></b>
+</div>
 <form action="#" th:action="@{/registration}" th:object="${userDto}" method="post">
     <div><label> User Name : <input type="text" name="name" placeholder="User name"/> </label></div>
     <div><label> Password: <input type="password" name="password" placeholder="Password"/> </label></div>
