@@ -2,6 +2,7 @@ package com.example.trainingProject.service.impl;
 
 import com.example.trainingProject.dto.OrderDto;
 import com.example.trainingProject.entity.Order;
+import com.example.trainingProject.exceptions.OrderException;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.service.OrderService;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
             return new OrderDto(order.getId(), order.getTotalCost(), order.getOrderCreationDate(),
                     order.getOrderUpdateDate(), order.getStatus());
         } else {
-            throw new RuntimeException("New order not found");
+            throw new OrderException("New order not found");
         }
     }
 

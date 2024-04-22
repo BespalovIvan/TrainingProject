@@ -50,18 +50,5 @@ public class RegistrationController {
         }
         return "login";
     }
-
-    @ExceptionHandler(PasswordException.class)
-    public String handlePasswordException() {
-        return "passwordException";
-    }
-    @ExceptionHandler(EmailException.class)
-    public String handleEmailException() {
-        return "emailException";
-    }
-    @ExceptionHandler(UserNameException.class)
-    public String handleUserNameException() {
-        return "userNameException";
-    }
 }
 

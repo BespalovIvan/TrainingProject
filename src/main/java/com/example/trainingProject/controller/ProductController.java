@@ -65,8 +65,4 @@ public class ProductController {
         return new ResponseEntity<>(result, headers, HttpStatus.OK);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public String handleException() {
-        return "redirect:/orders";
-    }
 }

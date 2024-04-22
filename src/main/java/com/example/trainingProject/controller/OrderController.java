@@ -37,9 +37,4 @@ public class OrderController {
         orderService.changeStatusOrder(orderId);
         return "redirect:/products-order/{order_id}";
     }
-
-    @ExceptionHandler(RuntimeException.class)
-    public String handleException() {
-        return "errorNewOrder";
-    }
 }

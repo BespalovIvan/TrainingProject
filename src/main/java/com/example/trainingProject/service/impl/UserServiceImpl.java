@@ -39,22 +39,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public boolean createUser(UserDto userDto) {
-        if (!userDto.getName().isEmpty()) {
+        if (userDto.getName().isEmpty() || userDto.getName() == null) {
+            throw new UserNameException("username cannot be empty");
+        } else {
             Optional<User> optionalUser = userRepo.findByName(userDto.getName());
             if (optionalUser.isPresent()) {
                 return false;
             }
-        } else {
-            throw new UserNameException("username cannot be empty");
         }
 
-        if (!userDto.getPassword().isEmpty()) {
-            userDto.setPassword(userDto.getPassword());
-        } else {
+        if (userDto.getPassword().isEmpty() || userDto.getPassword() == null) {
             throw new PasswordException("password cannot be empty");
+        } else {
+            userDto.setPassword(userDto.getPassword());
         }
-        if(userDto.getEmail().isEmpty()){
-            throw new EmailException("email cannot be empty");
+        if (userDto.getEmail().isEmpty() || userDto.getEmail() == null || !EmailValidator.isValid(userDto.getEmail())) {
+            throw new EmailException("Email is not correct!");
         }
         userDto.setCreateDate(LocalDateTime.now());
         userDto.setRole(Role.USER.toString());

@@ -1,10 +1,9 @@
 package com.example.trainingProject.service.impl;
 
+import com.example.trainingProject.dto.OrderProductDto;
 import com.example.trainingProject.dto.ProductDto;
 import com.example.trainingProject.entity.Order;
-import com.example.trainingProject.dto.OrderProductDto;
 import com.example.trainingProject.entity.Product;
-import com.example.trainingProject.repository.DBFileRepo;
 import com.example.trainingProject.repository.OrderRepo;
 import com.example.trainingProject.repository.ProductRepo;
 import com.example.trainingProject.service.ProductService;
@@ -22,12 +21,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo productRepo;
     private final OrderRepo orderRepo;
-    private final DBFileRepo dbFileRepo;
 
-    public ProductServiceImpl(ProductRepo productRepo, OrderRepo orderRepo, DBFileRepo dbFileRepo) {
+
+    public ProductServiceImpl(ProductRepo productRepo, OrderRepo orderRepo) {
         this.productRepo = productRepo;
         this.orderRepo = orderRepo;
-        this.dbFileRepo = dbFileRepo;
+
     }
 
     @Override

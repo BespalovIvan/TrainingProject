@@ -15,6 +15,8 @@ public class SmtpMailSenderImpl implements SmtpMailSender {
     private final JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String username;
+    @Value("${mail.url.activate}")
+    private  String url;
 
     public SmtpMailSenderImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -34,12 +36,14 @@ public class SmtpMailSenderImpl implements SmtpMailSender {
 
     @Override
     public String createMessageForActivate(UserDto userDto) {
-        if (!StringUtils.isEmpty(userDto.getEmail())) {
-            return String.format("Hello, %s! \n" +
-                            "Welcome to Shop. Please, visit next link: http://localhost:8080/activate/%s"
-                    , userDto.getName(), userDto.getActivateCode());
+        if (StringUtils.isEmpty(userDto.getEmail())) {
+            throw new EmailException("Email not found!");
 
+        } else {
+            return String.format("Hello, %s! \n" +
+                            "Welcome to Shop. Please, visit next link: "+ url +"/%s"
+                    , userDto.getName(), userDto.getActivateCode());
         }
-        throw new EmailException("Email not found!");
+
     }
 }
