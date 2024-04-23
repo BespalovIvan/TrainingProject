@@ -7,7 +7,11 @@
     <groupId>ivanBespalov.com</groupId>
     <artifactId>TrainingProject</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
+    <modules>
+        <module>MailModule</module>
+        <module>ApplicationModule</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
