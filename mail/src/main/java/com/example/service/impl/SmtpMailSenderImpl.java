@@ -1,9 +1,8 @@
 package com.example.service.impl;
 
+import com.example.EmailException;
+import com.example.dto.UserDto;
 import com.example.service.SmtpMailSender;
-import com.example.trainingProject.dto.UserDto;
-import com.example.trainingProject.exceptions.EmailException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,7 +16,7 @@ public class SmtpMailSenderImpl implements SmtpMailSender {
     @Value("${spring.mail.username}")
     private String username;
     @Value("${mail.url.activate}")
-    private  String url;
+    private String url;
 
     public SmtpMailSenderImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -42,7 +41,7 @@ public class SmtpMailSenderImpl implements SmtpMailSender {
 
         } else {
             return String.format("Hello, %s! \n" +
-                            "Welcome to Shop. Please, visit next link: "+ url +"/%s"
+                            "Welcome to Shop. Please, visit next link: " + url + "/%s"
                     , userDto.getName(), userDto.getActivateCode());
         }
 

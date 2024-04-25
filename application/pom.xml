@@ -8,15 +8,10 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>MailModule</artifactId>
+    <artifactId>application</artifactId>
     <packaging>jar</packaging>
 
-    <name>MailModule</name>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <name>application</name>
 
     <dependencies>
         <dependency>
