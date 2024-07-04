@@ -12,7 +12,6 @@ import java.sql.SQLException;
 
 @Configuration
 public class JDBCConnect {
-
     @Value("${spring.datasource.url}")
     String url;
     @Value("${spring.datasource.username}")
@@ -24,7 +23,6 @@ public class JDBCConnect {
     @Bean
     @Scope("prototype")
     public Connection createConnection() {
-
         try {
             return DriverManager.getConnection(url, login, password);
         } catch (SQLException e) {

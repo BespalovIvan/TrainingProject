@@ -9,6 +9,7 @@ import com.example.trainingProject.exceptions.PasswordException;
 import com.example.trainingProject.exceptions.UserNameException;
 import com.example.trainingProject.repository.UserRepo;
 import com.example.trainingProject.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,16 +21,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     private final UserRepo userRepo;
-
-
-    public UserServiceImpl(UserRepo userRepoSpring) {
-        this.userRepo = userRepoSpring;
-
-    }
 
     public Optional<UserDto> findById(Long id) {
         Optional<User> user = userRepo.findById(id);
