@@ -2,20 +2,20 @@ package com.example.trainingProject.controller;
 
 import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.service.UserService;
+import com.example.trainingProject.service.impl.KafkaSender;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.client.RestTemplate;
 
 @Controller
 @AllArgsConstructor
 public class RegistrationController {
     private final UserService userService;
 
-    private final RestTemplate restTemplate;
+    private final KafkaSender kafkaSender;
 
     @GetMapping("/registration")
     public String registration() {
@@ -30,7 +30,7 @@ public class RegistrationController {
 
         }
         userService.encodingUserPassword(userDto);
-        restTemplate.postForEntity("http://localhost:8081/activate", userDto, UserDto.class);
+        kafkaSender.sendMessage(userDto);
         return "redirect:/login";
     }
 
