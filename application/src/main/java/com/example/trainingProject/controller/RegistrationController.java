@@ -3,7 +3,6 @@ package com.example.trainingProject.controller;
 import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +27,10 @@ public class RegistrationController {
         if (!userService.createUser(userDto)) {
             model.addAttribute("message", "User exists!");
             return "registration";
+
         }
         userService.encodingUserPassword(userDto);
-        HttpEntity<UserDto> userDtoHttpEntity = new HttpEntity<>(userDto);
-        restTemplate.postForEntity("http://localhost:8081/activate", userDtoHttpEntity, String.class);
+        restTemplate.postForEntity("http://localhost:8081/activate", userDto, UserDto.class);
         return "redirect:/login";
     }
 
@@ -43,6 +42,7 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "activation code is not found");
         }
+
         return "login";
     }
 }

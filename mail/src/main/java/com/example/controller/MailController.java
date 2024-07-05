@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("send-message")
+@RequestMapping("/activate")
 @AllArgsConstructor
 public class MailController {
     private final MessageService messageService;
@@ -18,4 +18,7 @@ public class MailController {
     public String sendMessage(@RequestBody UserDto userDto) {
         return messageService.sendMessage(userDto);
     }
+
 }
+
+

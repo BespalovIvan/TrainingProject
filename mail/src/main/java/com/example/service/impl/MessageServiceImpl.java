@@ -27,8 +27,7 @@ public class MessageServiceImpl implements MessageService {
         String message = String.format("Hello, %s! \n" +
                         "Welcome to Shop. Please, visit next link: " + url + "/%s"
                 , userDto.getName(), userDto.getActivateCode());
-        smtpMailSender.send(userDto.getName(), "Activate code", message);
+        smtpMailSender.send(userDto.getEmail(), "Activate code", message);
         return message;
-
     }
 }
