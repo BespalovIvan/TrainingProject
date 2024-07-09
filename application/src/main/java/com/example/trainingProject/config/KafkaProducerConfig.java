@@ -1,11 +1,13 @@
 package com.example.trainingProject.config;
 
 import com.example.trainingProject.dto.UserDto;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -22,6 +24,11 @@ public class KafkaProducerConfig {
     private int retries;
     @Value("${kafka.producer.batch-size}")
     private Integer batchSize;
+
+    @Bean
+    public NewTopic topic1() {
+        return TopicBuilder.name("topic-1").build();
+    }
 
     @Bean
     public ProducerFactory<String, UserDto> producerFactory() {
