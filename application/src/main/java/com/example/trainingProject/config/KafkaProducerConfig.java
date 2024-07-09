@@ -24,21 +24,21 @@ public class KafkaProducerConfig {
     private Integer batchSize;
 
     @Bean
-    public KafkaTemplate<String, UserDto> kafkaTemplate() {
-        ProducerFactory<String, UserDto> producerFactory = new DefaultKafkaProducerFactory<>(producerConfigs());
-        return new KafkaTemplate<>(producerFactory);
+    public ProducerFactory<String, UserDto> producerFactory() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        config.put(ProducerConfig.RETRIES_CONFIG, retries);
+        config.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                JsonSerializer.class);
+        return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
-    public Map<String, Object> producerConfigs() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.RETRIES_CONFIG, retries);
-        props.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
-        return props;
+    public KafkaTemplate<String, UserDto> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 }
+

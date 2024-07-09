@@ -2,7 +2,7 @@ package com.example.trainingProject.controller;
 
 import com.example.trainingProject.dto.UserDto;
 import com.example.trainingProject.service.UserService;
-import com.example.trainingProject.service.impl.KafkaSender;
+import com.example.trainingProject.service.impl.ProducerMailMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
     private final UserService userService;
 
-    private final KafkaSender kafkaSender;
+    private final ProducerMailMessage producerMailMessage;
 
     @GetMapping("/registration")
     public String registration() {
@@ -27,10 +27,9 @@ public class RegistrationController {
         if (!userService.createUser(userDto)) {
             model.addAttribute("message", "User exists!");
             return "registration";
-
         }
         userService.encodingUserPassword(userDto);
-        kafkaSender.sendMessage(userDto);
+        producerMailMessage.sendMessage(userDto);
         return "redirect:/login";
     }
 
@@ -42,7 +41,6 @@ public class RegistrationController {
         } else {
             model.addAttribute("message", "activation code is not found");
         }
-
         return "login";
     }
 }

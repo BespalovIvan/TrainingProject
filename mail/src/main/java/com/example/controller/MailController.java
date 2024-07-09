@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/activate")
 @AllArgsConstructor
 public class MailController {
-//    private final MessageService messageService;
-//    private final ConsumerFactory<String,UserDto> consumerFactory;
-//
-//    @PostMapping
-//    @KafkaListener(topics = "topic-1", groupId = "group-1")
-//    public String sendMessage(UserDto userDto) {
-//        return messageService.sendMessage(userDto);
-//    }
+    private final MessageService messageService;
+    private final ConsumerFactory<String, UserDto> consumerFactory;
+
+    @PostMapping
+    @KafkaListener(topics = "topic-1", groupId = "group-1", containerFactory = "kafkaListenerContainerFactory")
+    public String sendMessage(UserDto userDto) {
+        return messageService.sendMessage(userDto);
+    }
 }
 
 
