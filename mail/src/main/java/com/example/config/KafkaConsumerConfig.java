@@ -19,12 +19,12 @@ import java.util.Map;
 
 @Configuration
 @EnableKafka
-public class KafkaConsumerConfig {
+public class KafkaConsumerConfig<K, V> {
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, UserDto> consumerFactory() {
+    public ConsumerFactory<K, V> consumerFactory() {
         JsonDeserializer<UserDto> deserializer = new JsonDeserializer<>(UserDto.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
@@ -38,12 +38,12 @@ public class KafkaConsumerConfig {
         config.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer);
-        return new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
+        return (ConsumerFactory<K, V>) new DefaultKafkaConsumerFactory<>(config, new StringDeserializer(), deserializer);
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, UserDto>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, UserDto> factory =
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<K, V>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<K, V> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

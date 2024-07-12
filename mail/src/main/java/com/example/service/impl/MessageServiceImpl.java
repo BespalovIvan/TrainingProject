@@ -19,7 +19,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public String sendMessage(UserDto userDto) {
+    public String sendMessageToMail(UserDto userDto) {
         if (StringUtils.isEmpty(userDto.getEmail())) {
             throw new EmailException("Email not found!");
 

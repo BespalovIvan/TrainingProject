@@ -1,8 +1,8 @@
 package com.example.trainingProject.controller;
 
 import com.example.trainingProject.dto.UserDto;
+import com.example.trainingProject.service.ProducerMailMessage;
 import com.example.trainingProject.service.UserService;
-import com.example.trainingProject.service.impl.ProducerMailMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
     private final UserService userService;
 
-    private final ProducerMailMessage producerMailMessage;
+    private final ProducerMailMessage<String,UserDto> producerMailMessage;
 
     @GetMapping("/registration")
     public String registration() {
